@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class LoginController {
@@ -21,11 +23,25 @@ public class LoginController {
     
     @FXML
     private Label errorLabel;
+
+    @FXML
+    private ImageView logoImage;
     
     private DAOFactory daoFactory;
     
     public LoginController() {
         this.daoFactory = DAOFactory.getInstance();
+    }
+    
+    @FXML
+    private void initialize() {
+        // Charger le logo depuis les ressources
+        try {
+            Image logo = new Image(getClass().getResource("/fr/bibliotheque/ui/assets/library_logo.jpg").toExternalForm());
+            logoImage.setImage(logo);
+        } catch (Exception e) {
+            // Si l'image n'est pas trouvée, ne rien faire
+        }
     }
     
     @FXML
