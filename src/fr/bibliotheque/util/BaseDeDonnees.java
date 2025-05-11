@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class BaseDeDonnees {
     private static BaseDeDonnees instance;
     private Connection connexion;
-    private static final String DB_URL="jdbc:sqlite:db/bibliotheque.db";
+    private static final String DB_URL="jdbc:sqlite:src/db/bibliotheque.db";
 
 
     private BaseDeDonnees(){
@@ -52,7 +52,7 @@ public class BaseDeDonnees {
 
             //Inserer un administrateur par defaut si aucun n'existe
 
-            stmt.execute("INSERT INTO OR IGNORE INTO Administrateur (id, nom, prenom, login, mot_de_passe)"+
+            stmt.execute("INSERT OR IGNORE INTO Administrateur (id, nom, prenom, login, mot_de_passe)"+
                     "SELECT 1, 'Admin', 'Admin', 'admin', 'admin'"+
                     "WHERE NOT EXISTS (SELECT 1 FROM Administrateur)");
 
