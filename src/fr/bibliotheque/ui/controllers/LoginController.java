@@ -2,7 +2,10 @@ package fr.bibliotheque.ui.controllers;
 
 import fr.bibliotheque.dao.DAOFactory;
 import fr.bibliotheque.metier.Administrateur;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LoginController {
     @FXML
@@ -27,6 +31,9 @@ public class LoginController {
     @FXML
     private ImageView logoImage;
     
+    @FXML
+    private Node loginCard; // Correspond à la VBox avec styleClass="login-card"
+    
     private DAOFactory daoFactory;
     
     public LoginController() {
@@ -35,12 +42,45 @@ public class LoginController {
     
     @FXML
     private void initialize() {
-        // Charger le logo depuis les ressources
+        // Charger le logo
         try {
             Image logo = new Image(getClass().getResource("/fr/bibliotheque/ui/assets/library_logo.jpg").toExternalForm());
             logoImage.setImage(logo);
         } catch (Exception e) {
-            // Si l'image n'est pas trouvée, ne rien faire
+            // Image not found, do nothing
+        }
+
+        // Animation d'apparition de la carte de connexion
+        if (loginCard == null && logoImage != null) {
+            // Fallback: essayer de trouver la carte par le parent du logo
+            loginCard = logoImage.getParent();
+        }
+        if (loginCard != null) {
+            FadeTransition fade = new FadeTransition(Duration.millis(900), loginCard);
+            fade.setFromValue(0);
+            fade.setToValue(1);
+            fade.play();
+
+            ScaleTransition scale = new ScaleTransition(Duration.millis(900), loginCard);
+            scale.setFromX(0.92);
+            scale.setFromY(0.92);
+            scale.setToX(1);
+            scale.setToY(1);
+            scale.play();
+        }
+        // Animation du logo
+        if (logoImage != null) {
+            FadeTransition fadeLogo = new FadeTransition(Duration.millis(1200), logoImage);
+            fadeLogo.setFromValue(0);
+            fadeLogo.setToValue(1);
+            fadeLogo.play();
+
+            ScaleTransition scaleLogo = new ScaleTransition(Duration.millis(1200), logoImage);
+            scaleLogo.setFromX(0.7);
+            scaleLogo.setFromY(0.7);
+            scaleLogo.setToX(1);
+            scaleLogo.setToY(1);
+            scaleLogo.play();
         }
     }
     

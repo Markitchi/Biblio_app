@@ -1,44 +1,22 @@
-/* Fond de la partie gauche */
-.left-pane {
-    -fx-background-color: linear-gradient(to bottom right, #1976d2, #42a5f5);
-    -fx-background-radius: 20 0 0 20;
-    -fx-effect: dropshadow(gaussian, #1976d2, 10, 0.2, 0, 2);
+/* Carte centrale blanche */
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-padding: 32 32 32 32;
+    -fx-effect: dropshadow(gaussian, #6a82fb, 18, 0.15, 0, 2);
 }
 
-.logo-title {
-    -fx-font-size: 32px;
+.login-title {
+    -fx-font-size: 22px;
     -fx-font-family: 'Arial Black', Arial, sans-serif;
-    -fx-text-fill: white;
+    -fx-text-fill: #6a82fb;
     -fx-font-weight: bold;
     -fx-padding: 0 0 10 0;
 }
 
-.welcome-text {
-    -fx-fill: white;
-    -fx-font-size: 15px;
-    -fx-font-family: 'Segoe UI', Arial, sans-serif;
-    -fx-text-alignment: center;
-}
-
-/* Partie droite (formulaire) */
-.right-pane {
-    -fx-background-color: #fff;
-    -fx-background-radius: 0 20 20 0;
-    -fx-padding: 40 60 40 60;
-    -fx-effect: dropshadow(gaussian, #1976d2, 10, 0.1, 0, 2);
-}
-
-.form-title {
-    -fx-font-size: 22px;
-    -fx-font-family: 'Arial Black', Arial, sans-serif;
-    -fx-text-fill: #1976d2;
-    -fx-font-weight: bold;
-    -fx-padding: 0 0 20 0;
-}
-
 .input-label {
     -fx-font-size: 13px;
-    -fx-text-fill: #1976d2;
+    -fx-text-fill: #6a82fb;
     -fx-font-family: 'Segoe UI', Arial, sans-serif;
     -fx-font-weight: bold;
 }
@@ -46,7 +24,7 @@
 .input-field {
     -fx-background-radius: 8;
     -fx-border-radius: 8;
-    -fx-border-color: #1976d2;
+    -fx-border-color: #6a82fb;
     -fx-border-width: 1;
     -fx-padding: 8 12 8 12;
     -fx-font-size: 14px;
@@ -54,18 +32,18 @@
 }
 
 .login-btn {
-    -fx-background-color: linear-gradient(to right, #1976d2, #42a5f5);
+    -fx-background-color: linear-gradient(to right, #6a82fb, #fc5c7d);
     -fx-text-fill: white;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-padding: 10 0 10 0;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #1976d2, 5, 0.1, 0, 1);
+    -fx-effect: dropshadow(gaussian, #6a82fb, 5, 0.1, 0, 1);
 }
 
 .login-btn:hover {
-    -fx-background-color: linear-gradient(to right, #1565c0, #1976d2);
+    -fx-background-color: linear-gradient(to right, #5a6efb, #e94e77);
 }
 
 .error-label {
