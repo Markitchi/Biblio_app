@@ -4,11 +4,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import fr.bibliotheque.service.GestionnaireImpl;
-import fr.bibliotheque.model.Livre;
+import fr.bibliotheque.metier.Livre;
 
 public class GestionLivreController {
     @FXML
@@ -30,7 +34,7 @@ public class GestionLivreController {
     @FXML
     private TableColumn<Livre, String> searchTitreColumn;
     @FXML
-    private TableColumn<Livre, String> searchAuteursColumn;
+    private TableColumn<Livre, String> searchAuteurColumn;
     @FXML
     private TableColumn<Livre, String> searchIsbnColumn;
     @FXML
@@ -42,7 +46,7 @@ public class GestionLivreController {
     @FXML
     private TextField addTitreField;
     @FXML
-    private TextField addAuteursField;
+    private TextField addAuteurField;
     @FXML
     private TextField addIsbnField;
     @FXML
@@ -56,7 +60,7 @@ public class GestionLivreController {
     @FXML
     private TextField modTitreField;
     @FXML
-    private TextField modAuteursField;
+    private TextField modAuteurField;
     @FXML
     private TextField modIsbnField;
     @FXML
@@ -80,7 +84,7 @@ public class GestionLivreController {
     @FXML
     private TableColumn<Livre, String> allTitreColumn;
     @FXML
-    private TableColumn<Livre, String> allAuteursColumn;
+    private TableColumn<Livre, String> allAuteurColumn;
     @FXML
     private TableColumn<Livre, String> allIsbnColumn;
     @FXML
@@ -101,11 +105,11 @@ public class GestionLivreController {
         gestionEmpruntsButton.setOnAction(e -> handleNavigation("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml"));
 
         // Configuration des colonnes de recherche
-        configureTableColumns(searchIdColumn, searchTitreColumn, searchAuteursColumn, 
+        configureTableColumns(searchIdColumn, searchTitreColumn, searchAuteurColumn, 
                             searchIsbnColumn, searchAnneeColumn, searchDispoColumn);
         
         // Configuration des colonnes de la liste complète
-        configureTableColumns(allIdColumn, allTitreColumn, allAuteursColumn, 
+        configureTableColumns(allIdColumn, allTitreColumn, allAuteurColumn, 
                             allIsbnColumn, allAnneeColumn, allDispoColumn);
 
         // Initialisation des actions des boutons
@@ -119,13 +123,13 @@ public class GestionLivreController {
 
     private void configureTableColumns(TableColumn<Livre, Integer> idCol,
                                      TableColumn<Livre, String> titreCol,
-                                     TableColumn<Livre, String> auteursCol,
+                                     TableColumn<Livre, String> auteurCol,
                                      TableColumn<Livre, String> isbnCol,
                                      TableColumn<Livre, Integer> anneeCol,
                                      TableColumn<Livre, Boolean> dispoCol) {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         titreCol.setCellValueFactory(new PropertyValueFactory<>("titre"));
-        auteursCol.setCellValueFactory(new PropertyValueFactory<>("auteurs"));
+        auteurCol.setCellValueFactory(new PropertyValueFactory<>("auteur"));
         isbnCol.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         anneeCol.setCellValueFactory(new PropertyValueFactory<>("anneePublication"));
         dispoCol.setCellValueFactory(new PropertyValueFactory<>("disponible"));
@@ -147,20 +151,23 @@ public class GestionLivreController {
     private void handleAddBook() {
         try {
             String titre = addTitreField.getText();
-            String auteurs = addAuteursField.getText();
+            String auteur = addAuteurField.getText();
             String isbn = addIsbnField.getText();
             int annee = Integer.parseInt(addAnneeField.getText());
 
             Livre livre = new Livre();
             livre.setTitre(titre);
-            livre.setAuteurs(auteurs);
+            livre.setAuteur(auteur);
             livre.setIsbn(isbn);
             livre.setAnneePublication(annee);
             livre.setDisponible(true);
 
-            gestionnaire.ajouterLivre(livre);
-            clearAddFields();
-            refreshAllBooksTable();
+            if (gestionnaire.ajouterLivre(livre)) {
+                clearAddFields();
+                refreshAllBooksTable();
+            } else {
+                showError("Erreur lors de l'ajout du livre");
+            }
         } catch (Exception e) {
             showError("Erreur lors de l'ajout du livre: " + e.getMessage());
         }
@@ -170,7 +177,7 @@ public class GestionLivreController {
         try {
             int id = Integer.parseInt(modIdField.getText());
             String titre = modTitreField.getText();
-            String auteurs = modAuteursField.getText();
+            String auteur = modAuteurField.getText();
             String isbn = modIsbnField.getText();
             int annee = Integer.parseInt(modAnneeField.getText());
             boolean dispo = Integer.parseInt(modDispoField.getText()) == 1;
@@ -178,14 +185,17 @@ public class GestionLivreController {
             Livre livre = new Livre();
             livre.setId(id);
             livre.setTitre(titre);
-            livre.setAuteurs(auteurs);
+            livre.setAuteur(auteur);
             livre.setIsbn(isbn);
             livre.setAnneePublication(annee);
             livre.setDisponible(dispo);
 
-            gestionnaire.modifierLivre(livre);
-            clearModifyFields();
-            refreshAllBooksTable();
+            if (gestionnaire.modifierLivre(livre)) {
+                clearModifyFields();
+                refreshAllBooksTable();
+            } else {
+                showError("Erreur lors de la modification du livre");
+            }
         } catch (Exception e) {
             showError("Erreur lors de la modification du livre: " + e.getMessage());
         }
@@ -194,9 +204,12 @@ public class GestionLivreController {
     private void handleDeleteBook() {
         try {
             int id = Integer.parseInt(deleteIdField.getText());
-            gestionnaire.supprimerLivre(id);
-            clearDeleteFields();
-            refreshAllBooksTable();
+            if (gestionnaire.supprimerLivre(id)) {
+                clearDeleteFields();
+                refreshAllBooksTable();
+            } else {
+                showError("Erreur lors de la suppression du livre");
+            }
         } catch (Exception e) {
             showError("Erreur lors de la suppression du livre: " + e.getMessage());
         }
@@ -204,12 +217,12 @@ public class GestionLivreController {
 
     private void refreshAllBooksTable() {
         allBooksTable.getItems().clear();
-        allBooksTable.getItems().addAll(gestionnaire.listerLivres());
+        allBooksTable.getItems().addAll(gestionnaire.listerTousLivres());
     }
 
     private void clearAddFields() {
         addTitreField.clear();
-        addAuteursField.clear();
+        addAuteurField.clear();
         addIsbnField.clear();
         addAnneeField.clear();
     }
@@ -217,7 +230,7 @@ public class GestionLivreController {
     private void clearModifyFields() {
         modIdField.clear();
         modTitreField.clear();
-        modAuteursField.clear();
+        modAuteurField.clear();
         modIsbnField.clear();
         modAnneeField.clear();
         modDispoField.clear();

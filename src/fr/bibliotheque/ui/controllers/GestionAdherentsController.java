@@ -4,11 +4,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import fr.bibliotheque.service.GestionnaireImpl;
-import fr.bibliotheque.model.Adherent;
+import fr.bibliotheque.metier.Adherent;
 
 public class GestionAdherentsController {
     @FXML
@@ -161,9 +165,12 @@ public class GestionAdherentsController {
             adherent.setTelephone(telephone);
             adherent.setEmail(email);
 
-            gestionnaire.ajouterAdherent(adherent);
-            clearAddFields();
-            refreshAllAdherentsTable();
+            if (gestionnaire.ajouterAdherent(adherent)) {
+                clearAddFields();
+                refreshAllAdherentsTable();
+            } else {
+                showError("Erreur lors de l'ajout de l'adhérent");
+            }
         } catch (Exception e) {
             showError("Erreur lors de l'ajout de l'adhérent: " + e.getMessage());
         }
@@ -186,9 +193,12 @@ public class GestionAdherentsController {
             adherent.setTelephone(telephone);
             adherent.setEmail(email);
 
-            gestionnaire.modifierAdherent(adherent);
-            clearModifyFields();
-            refreshAllAdherentsTable();
+            if (gestionnaire.modifierAdherent(adherent)) {
+                clearModifyFields();
+                refreshAllAdherentsTable();
+            } else {
+                showError("Erreur lors de la modification de l'adhérent");
+            }
         } catch (Exception e) {
             showError("Erreur lors de la modification de l'adhérent: " + e.getMessage());
         }
@@ -197,9 +207,12 @@ public class GestionAdherentsController {
     private void handleDeleteAdherent() {
         try {
             int id = Integer.parseInt(deleteIdField.getText());
-            gestionnaire.supprimerAdherent(id);
-            clearDeleteFields();
-            refreshAllAdherentsTable();
+            if (gestionnaire.supprimerAdherent(id)) {
+                clearDeleteFields();
+                refreshAllAdherentsTable();
+            } else {
+                showError("Erreur lors de la suppression de l'adhérent");
+            }
         } catch (Exception e) {
             showError("Erreur lors de la suppression de l'adhérent: " + e.getMessage());
         }
@@ -207,7 +220,7 @@ public class GestionAdherentsController {
 
     private void refreshAllAdherentsTable() {
         allAdherentsTable.getItems().clear();
-        allAdherentsTable.getItems().addAll(gestionnaire.listerAdherents());
+        allAdherentsTable.getItems().addAll(gestionnaire.listerTousAdherents());
     }
 
     private void clearAddFields() {

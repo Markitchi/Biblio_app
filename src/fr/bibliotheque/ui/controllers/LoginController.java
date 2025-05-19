@@ -4,16 +4,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import fr.bibliotheque.service.GestionnaireImpl;
+import fr.bibliotheque.metier.Administrateur;
 
 public class LoginController {
     @FXML
-    private TextField emailField;
+    private TextField loginField;
     @FXML
     private PasswordField passwordField;
     @FXML
@@ -26,34 +28,32 @@ public class LoginController {
     @FXML
     public void initialize() {
         gestionnaire = new GestionnaireImpl();
+        loginButton.setOnAction(e -> handleLogin());
     }
 
-    @FXML
     private void handleLogin() {
-        String email = emailField.getText();
-        String password = passwordField.getText();
+        String login = loginField.getText();
+        String motDePasse = passwordField.getText();
 
-        if (email.isEmpty() || password.isEmpty()) {
+        if (login.isEmpty() || motDePasse.isEmpty()) {
             showError("Veuillez remplir tous les champs");
             return;
         }
 
-        try {
-            // Vérification des identifiants
-            if (gestionnaire.verifierIdentifiants(email, password)) {
-                // Chargement de la vue Dashboard
+        Administrateur admin = gestionnaire.authentifier(login, motDePasse);
+        if (admin != null) {
+            try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/Dash.fxml"));
                 Parent root = loader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
-            } else {
-                showError("Identifiants incorrects");
+            } catch (Exception e) {
+                showError("Erreur lors du chargement de la vue: " + e.getMessage());
             }
-        } catch (Exception e) {
-            showError("Une erreur est survenue lors de la connexion");
-            e.printStackTrace();
+        } else {
+            showError("Identifiants incorrects");
         }
     }
 
