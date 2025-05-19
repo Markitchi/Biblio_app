@@ -136,7 +136,7 @@ public class GestionEmpruntsController extends BaseController {
     }
     
     @FXML
-    private void handleRetour() {
+    private void handleRetourLivre() {
         try {
             int idEmprunt = Integer.parseInt(idEmpruntField.getText());
             if (gestionnaire.enregistrerRetour(idEmprunt, new Date())) {
