@@ -14,7 +14,7 @@ import fr.bibliotheque.service.GestionnaireImpl;
 
 public class LoginController {
     @FXML
-    private TextField usernameField;
+    private TextField emailField;
     
     @FXML
     private PasswordField passwordField;
@@ -34,11 +34,12 @@ public class LoginController {
     
     @FXML
     private void handleLogin() {
-        String username = usernameField.getText();
+        String username = emailField.getText();
         String password = passwordField.getText();
         
         if (username.isEmpty() || password.isEmpty()) {
             errorLabel.setText("Veuillez remplir tous les champs");
+            errorLabel.setVisible(true);
             return;
         }
         
@@ -60,9 +61,11 @@ public class LoginController {
                 stage.show();
             } else {
                 errorLabel.setText("Identifiants incorrects");
+                errorLabel.setVisible(true);
             }
         } catch (Exception e) {
             errorLabel.setText("Erreur lors de la connexion");
+            errorLabel.setVisible(true);
             e.printStackTrace();
         }
     }
