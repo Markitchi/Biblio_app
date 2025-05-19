@@ -25,10 +25,13 @@ public class GestionAdherentsController extends BaseController {
     private TableColumn<Adherent, String> prenomColumn;
     
     @FXML
-    private TableColumn<Adherent, String> emailColumn;
+    private TableColumn<Adherent, String> adresseColumn;
     
     @FXML
     private TableColumn<Adherent, String> telephoneColumn;
+    
+    @FXML
+    private TableColumn<Adherent, String> emailColumn;
     
     // Champs pour l'ajout
     @FXML
@@ -38,10 +41,13 @@ public class GestionAdherentsController extends BaseController {
     private TextField prenomField;
     
     @FXML
-    private TextField emailField;
+    private TextField adresseField;
     
     @FXML
     private TextField telephoneField;
+    
+    @FXML
+    private TextField emailField;
     
     // Champs pour la modification
     @FXML
@@ -54,10 +60,13 @@ public class GestionAdherentsController extends BaseController {
     private TextField modifPrenomField;
     
     @FXML
-    private TextField modifEmailField;
+    private TextField modifAdresseField;
     
     @FXML
     private TextField modifTelephoneField;
+    
+    @FXML
+    private TextField modifEmailField;
     
     // Champs pour la suppression
     @FXML
@@ -75,8 +84,9 @@ public class GestionAdherentsController extends BaseController {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        adresseColumn.setCellValueFactory(new PropertyValueFactory<>("adresse"));
         telephoneColumn.setCellValueFactory(new PropertyValueFactory<>("telephone"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         
         // Charger tous les adhérents
         loadAdherents();
@@ -105,21 +115,23 @@ public class GestionAdherentsController extends BaseController {
         try {
             String nom = nomField.getText();
             String prenom = prenomField.getText();
-            String email = emailField.getText();
+            String adresse = adresseField.getText();
             String telephone = telephoneField.getText();
+            String email = emailField.getText();
             
-            if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || telephone.isEmpty()) {
+            if (nom.isEmpty() || prenom.isEmpty() || adresse.isEmpty() || telephone.isEmpty() || email.isEmpty()) {
                 showError("Veuillez remplir tous les champs");
                 return;
             }
             
-            Adherent adherent = new Adherent(nom, prenom, email, telephone);
+            Adherent adherent = new Adherent(nom, prenom, adresse, telephone, email);
             if (gestionnaire.ajouterAdherent(adherent)) {
                 // Réinitialiser les champs
                 nomField.clear();
                 prenomField.clear();
-                emailField.clear();
+                adresseField.clear();
                 telephoneField.clear();
+                emailField.clear();
                 
                 // Recharger la liste
                 loadAdherents();
@@ -138,22 +150,24 @@ public class GestionAdherentsController extends BaseController {
             int id = Integer.parseInt(modifIdField.getText());
             String nom = modifNomField.getText();
             String prenom = modifPrenomField.getText();
-            String email = modifEmailField.getText();
+            String adresse = modifAdresseField.getText();
             String telephone = modifTelephoneField.getText();
+            String email = modifEmailField.getText();
             
-            if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || telephone.isEmpty()) {
+            if (nom.isEmpty() || prenom.isEmpty() || adresse.isEmpty() || telephone.isEmpty() || email.isEmpty()) {
                 showError("Veuillez remplir tous les champs");
                 return;
             }
             
-            Adherent adherent = new Adherent(id, nom, prenom, email, telephone);
+            Adherent adherent = new Adherent(id, nom, prenom, adresse, telephone, email);
             if (gestionnaire.modifierAdherent(adherent)) {
                 // Réinitialiser les champs
                 modifIdField.clear();
                 modifNomField.clear();
                 modifPrenomField.clear();
-                modifEmailField.clear();
+                modifAdresseField.clear();
                 modifTelephoneField.clear();
+                modifEmailField.clear();
                 
                 // Recharger la liste
                 loadAdherents();
