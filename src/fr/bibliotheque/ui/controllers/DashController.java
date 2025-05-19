@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import fr.bibliotheque.metier.Administrateur;
 
-public class DashController {
+public class DashController extends BaseController {
     @FXML
     private Text welcomeText;
     
@@ -22,16 +22,20 @@ public class DashController {
     @FXML
     private Button gestionEmpruntsBtn;
     
-    private Administrateur currentAdmin;
-    
     @FXML
     public void initialize() {
-        setupButtonActions();
+        // Les actions sont maintenant gérées par les méthodes héritées de BaseController
     }
     
+    @Override
     public void setAdmin(Administrateur admin) {
-        this.currentAdmin = admin;
+        super.setAdmin(admin);
         welcomeText.setText("Bonjour, " + admin.getLogin());
+    }
+
+    @Override
+    protected Scene getScene() {
+        return welcomeText.getScene();
     }
     
     @FXML
@@ -53,10 +57,6 @@ public class DashController {
     @FXML
     private void handleGestionEmprunts() {
         loadView("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml");
-    }
-    
-    private void setupButtonActions() {
-        // Les actions sont maintenant gérées par les méthodes @FXML
     }
     
     private void loadView(String fxmlPath) {

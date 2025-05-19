@@ -10,6 +10,7 @@ import fr.bibliotheque.service.GestionnaireImpl;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import javafx.scene.Scene;
 
 public class GestionEmpruntsController extends BaseController {
     @FXML
@@ -160,5 +161,10 @@ public class GestionEmpruntsController extends BaseController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @Override
+    protected Scene getScene() {
+        return adherentComboBox.getScene();
     }
 } 

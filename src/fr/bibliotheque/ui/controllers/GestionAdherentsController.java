@@ -2,6 +2,7 @@ package fr.bibliotheque.ui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -206,5 +207,10 @@ public class GestionAdherentsController extends BaseController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @Override
+    protected Scene getScene() {
+        return nomField.getScene();
     }
 } 
