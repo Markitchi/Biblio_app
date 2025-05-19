@@ -165,6 +165,6 @@ public class GestionEmpruntsController extends BaseController {
 
     @Override
     protected Scene getScene() {
-        return adherentComboBox.getScene();
+        return searchField.getScene();
     }
 } 
