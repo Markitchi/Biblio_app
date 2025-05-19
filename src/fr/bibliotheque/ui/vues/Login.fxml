@@ -8,17 +8,14 @@
 
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="fr.bibliotheque.ui.controllers.LoginController" stylesheets="@Login.css">
     <AnchorPane>
-        <AnchorPane.style>
-            -fx-background-color: linear-gradient(to bottom right, #6a82fb, #fc5c7d);
-        </AnchorPane.style>
         <VBox alignment="CENTER" spacing="18.0" maxWidth="350" maxHeight="420" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" styleClass="login-card">
             <ImageView fx:id="logoImage" fitWidth="80" fitHeight="80" pickOnBounds="true" preserveRatio="true"/>
-            <Label text="Connexion à BiBli" styleClass="login-title"/>
+            <Label text="AUTHENTIFICATION" styleClass="login-title"/>
             <VBox spacing="8" maxWidth="260">
                 <Label text="Login" styleClass="input-label"/>
-                <TextField fx:id="emailField" promptText="Votre login" styleClass="input-field"/>
+                <TextField fx:id="emailField" promptText="Login" styleClass="input-field"/>
                 <Label text="Mot de passe" styleClass="input-label"/>
-                <PasswordField fx:id="passwordField" promptText="Votre mot de passe" styleClass="input-field"/>
+                <PasswordField fx:id="passwordField" promptText="Mot de passe" styleClass="input-field"/>
             </VBox>
             <Button fx:id="loginButton" text="Se connecter" onAction="#handleLogin" styleClass="login-btn" maxWidth="220"/>
             <Label fx:id="errorLabel" textFill="RED" visible="false" styleClass="error-label"/>
