@@ -34,10 +34,29 @@ public class DashController {
         welcomeText.setText("Bonjour, " + admin.getLogin());
     }
     
+    @FXML
+    private void handleAccueil() {
+        // Recharger la vue du tableau de bord
+        loadView("/fr/bibliotheque/ui/vues/Dash.fxml");
+    }
+    
+    @FXML
+    private void handleGestionLivres() {
+        loadView("/fr/bibliotheque/ui/vues/GestionLivre.fxml");
+    }
+    
+    @FXML
+    private void handleGestionAdherents() {
+        loadView("/fr/bibliotheque/ui/vues/GestionAdherents.fxml");
+    }
+    
+    @FXML
+    private void handleGestionEmprunts() {
+        loadView("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml");
+    }
+    
     private void setupButtonActions() {
-        gestionLivresBtn.setOnAction(e -> loadView("/fr/bibliotheque/ui/vues/GestionLivre.fxml"));
-        gestionAdherentsBtn.setOnAction(e -> loadView("/fr/bibliotheque/ui/vues/GestionAdherents.fxml"));
-        gestionEmpruntsBtn.setOnAction(e -> loadView("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml"));
+        // Les actions sont maintenant gérées par les méthodes @FXML
     }
     
     private void loadView(String fxmlPath) {
@@ -50,7 +69,7 @@ public class DashController {
                 ((BaseController) loader.getController()).setAdmin(currentAdmin);
             }
             
-            Stage stage = (Stage) gestionLivresBtn.getScene().getWindow();
+            Stage stage = (Stage) welcomeText.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
