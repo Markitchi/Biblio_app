@@ -15,7 +15,7 @@ import fr.bibliotheque.metier.Administrateur;
 
 public class LoginController {
     @FXML
-    private TextField loginField;
+    private TextField emailField;
     @FXML
     private PasswordField passwordField;
     @FXML
@@ -28,11 +28,11 @@ public class LoginController {
     @FXML
     public void initialize() {
         gestionnaire = new GestionnaireImpl();
-        loginButton.setOnAction(e -> handleLogin());
     }
 
-    private void handleLogin() {
-        String login = loginField.getText();
+    @FXML
+    public void handleLogin() {
+        String login = emailField.getText();
         String motDePasse = passwordField.getText();
 
         if (login.isEmpty() || motDePasse.isEmpty()) {
