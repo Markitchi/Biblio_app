@@ -1,96 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bibliotheque.ui.controllers.GestionEmpruntsController">
-    <children>
-        <!-- Barre de navigation -->
-        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="800.0" style="-fx-background-color: #2c3e50;">
-            <children>
-                <Button mnemonicParsing="false" onAction="#handleRetour" style="-fx-background-color: transparent; -fx-text-fill: white;" text="&lt; Retour" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des Emprunts" textAlignment="CENTER">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
-                </Text>
-            </children>
-            <padding>
-                <Insets left="20.0" />
-            </padding>
-        </HBox>
 
-        <!-- Contenu principal -->
-        <VBox layoutY="50.0" prefHeight="550.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: #ecf0f1;">
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-            <children>
-                <!-- Barre de recherche -->
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <children>
-                        <TextField fx:id="searchField" prefHeight="30.0" prefWidth="200.0" promptText="Rechercher un emprunt..." />
-                        <Button mnemonicParsing="false" onAction="#handleSearch" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Rechercher" />
-                    </children>
-                </HBox>
-
-                <!-- Table des emprunts -->
-                <TableView fx:id="empruntsTable" prefHeight="300.0" prefWidth="760.0" style="-fx-background-color: white;">
-                    <columns>
-                        <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
-                        <TableColumn fx:id="idLivreColumn" prefWidth="100.0" text="ID Livre" />
-                        <TableColumn fx:id="idAdherentColumn" prefWidth="100.0" text="ID Adhérent" />
-                        <TableColumn fx:id="dateEmpruntColumn" prefWidth="150.0" text="Date Emprunt" />
-                        <TableColumn fx:id="dateRetourPrevueColumn" prefWidth="150.0" text="Date Retour Prévue" />
-                        <TableColumn fx:id="dateRetourEffectifColumn" prefWidth="150.0" text="Date Retour Effectif" />
-                        <TableColumn fx:id="retourneColumn" prefWidth="100.0" text="Retourné" />
-                    </columns>
-                </TableView>
-
-                <!-- Formulaire d'emprunt -->
-                <GridPane hgap="10.0" vgap="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <Label text="ID Livre:" />
-                        <TextField fx:id="idLivreField" GridPane.columnIndex="1" />
-                        <Label text="ID Adhérent:" GridPane.rowIndex="1" />
-                        <TextField fx:id="idAdherentField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Date Emprunt:" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="dateEmpruntPicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Date Retour:" GridPane.rowIndex="3" />
-                        <DatePicker fx:id="dateRetourPicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Button mnemonicParsing="false" onAction="#handleEmprunt" style="-fx-background-color: #2ecc71; -fx-text-fill: white;" text="Enregistrer Emprunt" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    </children>
-                </GridPane>
-
-                <!-- Formulaire de retour -->
-                <GridPane hgap="10.0" vgap="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <Label text="ID Emprunt:" />
-                        <TextField fx:id="idEmpruntField" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#handleRetourLivre" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Enregistrer Retour" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    </children>
-                </GridPane>
-            </children>
-        </VBox>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+               <children>
+                  <AnchorPane layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="520.0" prefWidth="244.0" styleClass="sidebar" stylesheets="@stylesheet.css">
+                     <children>
+                        <Button alignment="CENTER" layoutY="198.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" />
+                        <Button alignment="CENTER" layoutY="286.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" />
+                        <Button alignment="CENTER" layoutY="370.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" />
+                        <Text fill="WHITE" layoutX="14.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonjour," wrappingWidth="177.98309516906738">
+                           <font>
+                              <Font name="Cambria Bold" size="27.0" />
+                           </font>
+                        </Text>
+                        <Button alignment="CENTER" layoutY="116.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Acceuil" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="243.0" layoutY="1.0" prefHeight="600.0" prefWidth="560.0">
+                     <children>
+                        <TabPane layoutX="-2.0" prefHeight="600.0" prefWidth="560.0" tabClosingPolicy="UNAVAILABLE">
+                           <tabs>
+                              <Tab text="En Cours">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TableView prefHeight="570.0" prefWidth="560.0">
+                                             <columns>
+                                                <TableColumn prefWidth="35.99998474121094" text="ID" />
+                                                <TableColumn prefWidth="54.4000244140625" text="ID Livre" />
+                                                <TableColumn prefWidth="78.4000244140625" text="ID Adherent" />
+                                                <TableColumn prefWidth="97.5999755859375" text="Date emprunt" />
+                                                <TableColumn prefWidth="119.20001220703125" text="Date retour prevue" />
+                                                <TableColumn prefWidth="96.79998779296875" text="Retour effectif" />
+                                                <TableColumn prefWidth="75.9998779296875" text="Retoune" />
+                                             </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Rechercher">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.08345120226308343" layoutX="2.0" layoutY="3.0" orientation="VERTICAL" prefHeight="567.0" prefWidth="560.0">
+                                             <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TextField layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="ID" />
+                                                      <Button layoutX="398.0" layoutY="10.0" mnemonicParsing="false" text="Rechercher" />
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <TableView layoutY="-2.0" prefHeight="520.0" prefWidth="560.0">
+                                                         <columns>
+                                                            <TableColumn prefWidth="35.99998474121094" text="ID" />
+                                                            <TableColumn prefWidth="54.4000244140625" text="ID Livre" />
+                                                            <TableColumn prefWidth="78.4000244140625" text="ID Adherent" />
+                                                            <TableColumn prefWidth="97.5999755859375" text="Date emprunt" />
+                                                            <TableColumn prefWidth="119.20001220703125" text="Date retour prevue" />
+                                                            <TableColumn prefWidth="96.79998779296875" text="Retour effectif" />
+                                                            <TableColumn prefWidth="75.9998779296875" text="Retoune" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Emprunter">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="554.0" prefWidth="560.0">
+                                       <children>
+                                          <AnchorPane layoutX="-1.0" prefHeight="54.0" prefWidth="560.0" />
+                                          <AnchorPane layoutY="151.0" prefHeight="349.0" prefWidth="560.0" stylesheets="@stylesheet.css">
+                                             <children>
+                                                <TextField layoutX="205.0" layoutY="53.0" promptText="ID Livre" />
+                                                <TextField layoutX="205.0" layoutY="100.0" promptText="ID Adherent" />
+                                                <Label layoutX="148.0" layoutY="56.0" text="ID Livre">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="108.0" layoutY="103.0" text="ID Adherent">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="102.0" layoutY="150.0" text="Date Emprunt">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="117.0" layoutY="184.0" prefHeight="32.0" prefWidth="86.0" text="Date Retour">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Button layoutX="219.0" layoutY="249.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Enregistrer Emprunt" />
+                                                <VBox prefHeight="200.0" prefWidth="100.0" />
+                                                <DatePicker layoutX="203.0" layoutY="147.0" />
+                                                <DatePicker layoutX="204.0" layoutY="188.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <Text fill="#16a685" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ENREGISTRER UN EMPRUNT" textAlignment="CENTER" wrappingWidth="560.0">
+                                             <font>
+                                                <Font name="System Bold" size="36.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Retourner">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Text fill="#16a685" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RETOURNER UN LIVRE" textAlignment="CENTER" wrappingWidth="560.0">
+                                             <font>
+                                                <Font name="System Bold" size="36.0" />
+                                             </font>
+                                          </Text>
+                                          <AnchorPane layoutX="-8.0" layoutY="111.0" prefHeight="405.0" prefWidth="560.0" stylesheets="@stylesheet.css">
+                                             <children>
+                                                <Button layoutX="249.0" layoutY="230.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Retourner" />
+                                                <VBox prefHeight="200.0" prefWidth="100.0" />
+                                                <TextField layoutX="216.0" layoutY="165.0" promptText=" ID Emprunt" />
+                                                <Label layoutX="127.0" layoutY="162.0" prefHeight="32.0" prefWidth="76.0" text="ID Emprunt">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+                  <ImageView fitHeight="66.0" fitWidth="84.0" layoutX="89.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/library_logo.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>

@@ -6,27 +6,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.geometry.Insets?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bibliotheque.ui.controllers.DashController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="520.0" prefWidth="244.0" styleClass="sidebar" stylesheets="@stylesheet.css">
          <children>
-            <Button alignment="CENTER" layoutY="198.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" onAction="#handleGestionLivres" />
-            <Button alignment="CENTER" layoutY="286.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" onAction="#handleGestionAdherents" />
-            <Button alignment="CENTER" layoutY="370.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" onAction="#handleGestionEmprunts" />
-            <Text fx:id="welcomeText" fill="WHITE" layoutX="14.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonjour," wrappingWidth="177.98309516906738">
+            <Button alignment="CENTER" layoutY="198.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" />
+            <Button alignment="CENTER" layoutY="286.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" />
+            <Button alignment="CENTER" layoutY="370.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" />
+            <Text fill="WHITE" layoutX="14.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonjour," wrappingWidth="177.98309516906738">
                <font>
                   <Font name="Cambria Bold" size="27.0" />
                </font>
             </Text>
-            <Button alignment="CENTER" layoutY="116.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Accueil" textAlignment="CENTER" textFill="WHITE" onAction="#handleAccueil">
+            <Button alignment="CENTER" layoutY="116.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Acceuil" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-         </children>
-      </AnchorPane>
+         </children></AnchorPane>
       <ImageView fitHeight="297.0" fitWidth="317.0" layoutX="389.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/library_logo.jpg" />
