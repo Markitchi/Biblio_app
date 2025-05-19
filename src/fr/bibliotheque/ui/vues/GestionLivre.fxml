@@ -12,12 +12,29 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bibliotheque.ui.controllers.GestionLivreController">
    <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="800.0" style="-fx-background-color: #2c3e50;">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleRetour" style="-fx-background-color: transparent; -fx-text-fill: white;" text="&lt; Retour" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des Livres" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </HBox>
       <AnchorPane layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="520.0" prefWidth="244.0" styleClass="sidebar" stylesheets="@stylesheet.css">
          <children>
             <Button alignment="CENTER" layoutY="198.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" />
@@ -47,8 +64,8 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <TextField layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="Titre, auteur, ISBN," />
-                                          <Button layoutX="398.0" layoutY="10.0" mnemonicParsing="false" text="Rechercher" />
+                                          <TextField fx:id="searchField" layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="Titre, auteur, ISBN," />
+                                          <Button layoutX="398.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSearch" text="Rechercher" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

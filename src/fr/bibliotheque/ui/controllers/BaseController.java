@@ -6,9 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import fr.bibliotheque.metier.Administrateur;
+import java.util.Stack;
 
 public abstract class BaseController {
     protected Administrateur currentAdmin;
+    private static Stack<Scene> navigationHistory = new Stack<>();
     
     public void setAdmin(Administrateur admin) {
         this.currentAdmin = admin;
@@ -34,8 +36,24 @@ public abstract class BaseController {
         loadView("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml");
     }
 
+    @FXML
+    protected void handleRetour() {
+        if (!navigationHistory.isEmpty()) {
+            Scene previousScene = navigationHistory.pop();
+            Stage stage = (Stage) getScene().getWindow();
+            stage.setScene(previousScene);
+        }
+    }
+
     protected void loadView(String fxmlPath) {
         try {
+            // Sauvegarder la scène actuelle dans l'historique
+            Scene currentScene = getScene();
+            if (currentScene != null) {
+                navigationHistory.push(currentScene);
+            }
+
+            // Charger la nouvelle vue
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             
