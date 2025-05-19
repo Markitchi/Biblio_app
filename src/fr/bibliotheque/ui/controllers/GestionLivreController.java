@@ -206,6 +206,6 @@ public class GestionLivreController extends BaseController {
 
     @Override
     protected Scene getScene() {
-        return titreField.getScene();
+        return searchField.getScene();
     }
 } 

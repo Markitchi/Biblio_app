@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import fr.bibliotheque.metier.Administrateur;
 import java.util.Stack;
+import java.io.IOException;
 
 public abstract class BaseController {
     protected Administrateur currentAdmin;
@@ -47,26 +48,13 @@ public abstract class BaseController {
 
     protected void loadView(String fxmlPath) {
         try {
-            // Sauvegarder la scène actuelle dans l'historique
-            Scene currentScene = getScene();
-            if (currentScene != null) {
-                navigationHistory.push(currentScene);
-            }
-
-            // Charger la nouvelle vue
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
-            
-            // Passer l'admin aux autres contrôleurs si nécessaire
-            if (loader.getController() instanceof BaseController) {
-                ((BaseController) loader.getController()).setAdmin(currentAdmin);
+            Scene scene = getScene();
+            if (scene != null) {
+                scene.setRoot(root);
             }
-            
-            Stage stage = (Stage) getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

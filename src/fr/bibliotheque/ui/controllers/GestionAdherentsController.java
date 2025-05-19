@@ -211,6 +211,6 @@ public class GestionAdherentsController extends BaseController {
 
     @Override
     protected Scene getScene() {
-        return nomField.getScene();
+        return searchField.getScene();
     }
 } 
