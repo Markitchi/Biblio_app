@@ -1,0 +1,94 @@
+classDiagram
+    %% Interfaces
+    class IGestionLivre {
+        <<interface>>
+        +ajouterLivre(Livre livre) boolean
+        +supprimerLivre(int id) boolean
+        +modifierLivre(Livre livre) boolean
+        +rechercherLivre(String critere) List~Livre~
+        +listerTousLivres() List~Livre~
+    }
+    
+    class IGestionAdherent {
+        <<interface>>
+        +ajouterAdherent(Adherent adherent) boolean
+        +supprimerAdherent(int id) boolean
+        +modifierAdherent(Adherent adherent) boolean
+        +rechercherAdherent(String critere) List~Adherent~
+        +listerTousAdherents() List~Adherent~
+    }
+    
+    class IGestionEmprunt {
+        <<interface>>
+        +enregistrerEmprunt(Emprunt emprunt) boolean
+        +enregistrerRetour(int empruntId, Date dateRetour) boolean
+        +listerEmpruntsEnCours() List~Emprunt~
+        +listerHistoriqueEmprunts() List~Emprunt~
+        +listerEmpruntParAdherent(int adherentId) List~Emprunt~
+        +listerEmpruntParLivre(int livreId) List~Emprunt~
+    }
+    
+    %% Classes concrètes
+    class Administrateur {
+        -int id
+        -String nom
+        -String prenom
+        -String login
+        -String motDePasse
+        +authentifier(String login, String motDePasse) boolean
+    }
+
+    class GestionnaireImpl {
+        -Connection connexion
+        +initierBaseDeDonnees()
+    }
+    
+    class Livre {
+        -int id
+        -String titre
+        -String auteur
+        -String isbn
+        -int anneePublication
+        -boolean disponible
+        +estDisponible() boolean
+        +setDisponible(boolean disponible) void
+    }
+    
+    class Adherent {
+        -int id
+        -String nom
+        -String prenom
+        -String adresse
+        -String telephone
+        -String email
+    }
+    
+    class Emprunt {
+        -int id
+        -int livreId
+        -int adherentId
+        -Date dateEmprunt
+        -Date dateRetourPrevue
+        -Date dateRetourEffective
+        -boolean retourne
+        +estEnRetard() boolean
+        +dureeEmprunt() int
+    }
+    
+    class BaseDeDonnees {
+        -Connection connexion
+        -static BaseDeDonnees instance
+        -BaseDeDonnees()
+        +static getInstance() BaseDeDonnees
+        +getConnexion() Connection
+        +initialiserBaseDeDonnees() void
+    }
+    
+    %% Relations
+    GestionnaireImpl ..|> IGestionLivre
+    GestionnaireImpl ..|> IGestionAdherent
+    GestionnaireImpl ..|> IGestionEmprunt
+    GestionnaireImpl --> BaseDeDonnees
+    Administrateur --> GestionnaireImpl : utilise
+    Emprunt --> Livre : concerne
+    Emprunt --> Adherent : concerne

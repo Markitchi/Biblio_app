@@ -1,0 +1,23 @@
+bibliotheque/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── fr/bibliotheque/
+│   │   │   │   ├── dao/           # Couche d'accès aux données
+│   │   │   │   ├── metier/        # Classes métier
+│   │   │   │   ├── service/       # Interfaces et implémentations
+│   │   │   │   ├── ui/            # Interface utilisateur
+│   │   │   │   └── util/          # Classes utilitaires
+│   │   │   └── Main.java          # Point d'entrée
+│   │   └── resources/             # Ressources (images, config)
+│   └── test/                      # Tests unitaires
+│
+├── lib/                           # Bibliothèques externes
+│   └── sqlite-jdbc-3.36.0.3.jar   # Driver SQLite
+│
+├── db/                            # Dossier pour la base de données
+│   └── bibliotheque.db            # Fichier DB SQLite
+│
+└── docs/                          # Documentation
+    └── manuel_utilisateur.pdf     # Manuel d'utilisation

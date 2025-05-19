@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor Admin as Administrateur
+    participant UI as Interface Utilisateur
+    participant GE as GestionnaireImpl
+    participant BD as BaseDeDonnees
+    
+    Admin->>UI: Sélectionne "Enregistrer un emprunt"
+    UI->>UI: Affiche le formulaire d'emprunt
+    Admin->>UI: Saisit ID adhérent, ID livre, date retour prévue
+    UI->>GE: enregistrerEmprunt(emprunt)
+    
+    GE->>BD: getConnexion()
+    BD-->>GE: connexion
+    
+    GE->>BD: Vérifie disponibilité du livre
+    BD-->>GE: livre disponible (true/false)
+    
+    alt Livre disponible
+        GE->>BD: Insert dans table Emprunt
+        BD-->>GE: Confirmation insertion
+        GE->>BD: Update statut livre (disponible = false)
+        BD-->>GE: Confirmation update
+        GE-->>UI: true (succès)
+        UI-->>Admin: Confirmation d'emprunt
+    else Livre non disponible
+        GE-->>UI: false (échec)
+        UI-->>Admin: Message d'erreur
+    end

@@ -1,0 +1,50 @@
+graph TD
+    %% Acteurs
+    User[Administrateur]
+    
+    %% Cas d'utilisation
+    UC1[Se connecter]
+    UC2[Gérer les livres]
+    UC3[Gérer les adhérents]
+    UC4[Gérer les emprunts]
+    
+    %% Sous-cas d'utilisation - Livres
+    UC2.1[Ajouter un livre]
+    UC2.2[Modifier un livre]
+    UC2.3[Supprimer un livre]
+    UC2.4[Rechercher un livre]
+    UC2.5[Consulter l'inventaire]
+    
+    %% Sous-cas d'utilisation - Adhérents
+    UC3.1[Ajouter un adhérent]
+    UC3.2[Modifier un adhérent]
+    UC3.3[Supprimer un adhérent]
+    UC3.4[Rechercher un adhérent]
+    
+    %% Sous-cas d'utilisation - Emprunts
+    UC4.1[Enregistrer un emprunt]
+    UC4.2[Enregistrer un retour]
+    UC4.3[Consulter les emprunts en cours]
+    UC4.4[Consulter l'historique des emprunts]
+    
+    %% Relations
+    User --> UC1
+    UC1 --> UC2
+    UC1 --> UC3
+    UC1 --> UC4
+    
+    UC2 --> UC2.1
+    UC2 --> UC2.2
+    UC2 --> UC2.3
+    UC2 --> UC2.4
+    UC2 --> UC2.5
+    
+    UC3 --> UC3.1
+    UC3 --> UC3.2
+    UC3 --> UC3.3
+    UC3 --> UC3.4
+    
+    UC4 --> UC4.1
+    UC4 --> UC4.2
+    UC4 --> UC4.3
+    UC4 --> UC4.4
