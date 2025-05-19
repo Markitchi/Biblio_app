@@ -15,22 +15,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bibliotheque.ui.controllers.GestionAdherentsController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
          <children>
             <AnchorPane layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="520.0" prefWidth="244.0" styleClass="sidebar" stylesheets="@stylesheet.css">
                <children>
-                  <Button alignment="CENTER" layoutY="198.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" />
-                  <Button alignment="CENTER" layoutY="286.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" />
-                  <Button alignment="CENTER" layoutY="370.0" mnemonicParsing="false" opacity="0.5" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" />
+                  <Button fx:id="gestionLivresButton" alignment="CENTER" layoutY="198.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" onAction="#handleGestionLivres" />
+                  <Button fx:id="gestionAdherentsButton" alignment="CENTER" layoutY="286.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" onAction="#handleGestionAdherents" />
+                  <Button fx:id="gestionEmpruntsButton" alignment="CENTER" layoutY="370.0" mnemonicParsing="false" opacity="0.5" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" onAction="#handleGestionEmprunts" />
                   <Text fill="WHITE" layoutX="14.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonjour," wrappingWidth="177.98309516906738">
                      <font>
                         <Font name="Cambria Bold" size="27.0" />
                      </font>
                   </Text>
-                  <Button alignment="CENTER" layoutY="116.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Acceuil" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="accueilButton" alignment="CENTER" layoutY="116.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Accueil" textAlignment="CENTER" textFill="WHITE" onAction="#handleAccueil">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -49,20 +48,20 @@
                                        <items>
                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <TextField layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="Nom, Prenom ou Email" />
-                                                <Button layoutX="398.0" layoutY="10.0" mnemonicParsing="false" text="Rechercher" />
+                                                <TextField fx:id="searchField" layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="Nom, Prenom ou Email" />
+                                                <Button fx:id="searchButton" layoutX="398.0" layoutY="10.0" mnemonicParsing="false" text="Rechercher" onAction="#handleSearch" />
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <TableView layoutX="1.0" layoutY="2.0" prefHeight="514.0" prefWidth="560.0">
+                                                <TableView fx:id="searchResultsTable" layoutX="1.0" layoutY="2.0" prefHeight="514.0" prefWidth="560.0">
                                                    <columns>
-                                                      <TableColumn prefWidth="42.399948835372925" text="ID" />
-                                                      <TableColumn prefWidth="102.40002059936523" text="Nom" />
-                                                      <TableColumn prefWidth="100.0" text="Prenom" />
-                                                      <TableColumn prefWidth="117.59999084472656" text="adresse" />
-                                                      <TableColumn prefWidth="72.0" text="telephone" />
-                                                      <TableColumn prefWidth="125.5999755859375" text="email" />
+                                                      <TableColumn fx:id="idColumn" prefWidth="42.399948835372925" text="ID" />
+                                                      <TableColumn fx:id="nomColumn" prefWidth="102.40002059936523" text="Nom" />
+                                                      <TableColumn fx:id="prenomColumn" prefWidth="100.0" text="Prenom" />
+                                                      <TableColumn fx:id="adresseColumn" prefWidth="117.59999084472656" text="adresse" />
+                                                      <TableColumn fx:id="telephoneColumn" prefWidth="72.0" text="telephone" />
+                                                      <TableColumn fx:id="emailColumn" prefWidth="125.5999755859375" text="email" />
                                                    </columns>
                                                 </TableView>
                                              </children>
@@ -80,10 +79,10 @@
                                     <AnchorPane layoutX="-1.0" prefHeight="54.0" prefWidth="560.0" />
                                     <AnchorPane layoutY="151.0" prefHeight="349.0" prefWidth="560.0" stylesheets="@stylesheet.css">
                                        <children>
-                                          <TextField layoutX="205.0" layoutY="53.0" promptText="Nom" />
-                                          <TextField layoutX="205.0" layoutY="100.0" promptText="Prenom" />
-                                          <TextField layoutX="206.0" layoutY="147.0" promptText="Adresse" />
-                                          <TextField layoutX="207.0" layoutY="190.0" promptText="Telephone" />
+                                          <TextField fx:id="nomField" layoutX="205.0" layoutY="53.0" promptText="Nom" />
+                                          <TextField fx:id="prenomField" layoutX="205.0" layoutY="100.0" promptText="Prenom" />
+                                          <TextField fx:id="adresseField" layoutX="206.0" layoutY="147.0" promptText="Adresse" />
+                                          <TextField fx:id="telephoneField" layoutX="207.0" layoutY="190.0" promptText="Telephone" />
                                           <Label layoutX="148.0" layoutY="56.0" text="Nom">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -104,9 +103,9 @@
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                           </Label>
-                                          <Button layoutX="243.0" layoutY="289.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Ajouter" />
+                                          <Button fx:id="ajouterButton" layoutX="243.0" layoutY="289.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Ajouter" onAction="#handleAjouter" />
                                           <VBox prefHeight="200.0" prefWidth="100.0" />
-                                          <TextField layoutX="208.0" layoutY="234.0" promptText="Email" />
+                                          <TextField fx:id="emailField" layoutX="208.0" layoutY="234.0" promptText="Email" />
                                           <Label layoutX="148.0" layoutY="231.0" prefHeight="32.0" prefWidth="39.0" text="Email">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -134,10 +133,10 @@
                                     </Text>
                                     <AnchorPane layoutX="-8.0" layoutY="111.0" prefHeight="405.0" prefWidth="560.0" stylesheets="@stylesheet.css">
                                        <children>
-                                          <TextField layoutX="205.0" layoutY="53.0" promptText="Nom" />
-                                          <TextField layoutX="205.0" layoutY="100.0" promptText="Prenom" />
-                                          <TextField layoutX="206.0" layoutY="147.0" promptText="Adresse" />
-                                          <TextField layoutX="207.0" layoutY="190.0" promptText="Telephone" />
+                                          <TextField fx:id="modifNomField" layoutX="205.0" layoutY="53.0" promptText="Nom" />
+                                          <TextField fx:id="modifPrenomField" layoutX="205.0" layoutY="100.0" promptText="Prenom" />
+                                          <TextField fx:id="modifAdresseField" layoutX="206.0" layoutY="147.0" promptText="Adresse" />
+                                          <TextField fx:id="modifTelephoneField" layoutX="207.0" layoutY="190.0" promptText="Telephone" />
                                           <Label layoutX="148.0" layoutY="56.0" text="Nom">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -158,15 +157,15 @@
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                           </Label>
-                                          <Button layoutX="252.0" layoutY="337.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Modifier" />
+                                          <Button fx:id="modifierButton" layoutX="252.0" layoutY="337.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Modifier" onAction="#handleModifier" />
                                           <VBox prefHeight="200.0" prefWidth="100.0" />
-                                          <TextField layoutX="208.0" layoutY="234.0" promptText="Email" />
+                                          <TextField fx:id="modifEmailField" layoutX="208.0" layoutY="234.0" promptText="Email" />
                                           <Label layoutX="148.0" layoutY="231.0" prefHeight="32.0" prefWidth="39.0" text="Email">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="209.0" layoutY="276.0" promptText="ID" />
+                                          <TextField fx:id="modifIdField" layoutX="209.0" layoutY="276.0" promptText="ID" />
                                           <Label layoutX="154.0" layoutY="273.0" prefHeight="32.0" prefWidth="26.0" text="ID">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
@@ -182,18 +181,18 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <Text fill="#a61717" layoutX="-14.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUPPRIMER UN LIVRE" textAlignment="CENTER" wrappingWidth="560.0">
+                                    <Text fill="#a61717" layoutX="-14.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SUPPRIMER UN ADHERENT" textAlignment="CENTER" wrappingWidth="560.0">
                                        <font>
                                           <Font name="System Bold" size="36.0" />
                                        </font>
                                     </Text>
-                                    <TextField layoutX="256.0" layoutY="240.0" promptText="ID" />
+                                    <TextField fx:id="deleteIdField" layoutX="256.0" layoutY="240.0" promptText="ID" />
                                     <Label layoutX="153.0" layoutY="237.0" prefHeight="32.0" prefWidth="92.0" text="ID Adherent">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="235.0" layoutY="337.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Supprimer" textFill="#d90a0a" />
+                                    <Button fx:id="supprimerButton" layoutX="235.0" layoutY="337.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Supprimer" textFill="#d90a0a" onAction="#handleSupprimer" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -202,14 +201,14 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TableView prefHeight="570.0" prefWidth="560.0">
+                                    <TableView fx:id="allAdherentsTable" prefHeight="570.0" prefWidth="560.0">
                                        <columns>
-                                          <TableColumn prefWidth="42.399948835372925" text="ID" />
-                                          <TableColumn prefWidth="102.40002059936523" text="Nom" />
-                                          <TableColumn prefWidth="100.0" text="Prenom" />
-                                          <TableColumn prefWidth="117.59999084472656" text="adresse" />
-                                          <TableColumn prefWidth="72.0" text="telephone" />
-                                          <TableColumn prefWidth="125.5999755859375" text="email" />
+                                          <TableColumn fx:id="allIdColumn" prefWidth="42.399948835372925" text="ID" />
+                                          <TableColumn fx:id="allNomColumn" prefWidth="102.40002059936523" text="Nom" />
+                                          <TableColumn fx:id="allPrenomColumn" prefWidth="100.0" text="Prenom" />
+                                          <TableColumn fx:id="allAdresseColumn" prefWidth="117.59999084472656" text="adresse" />
+                                          <TableColumn fx:id="allTelephoneColumn" prefWidth="72.0" text="telephone" />
+                                          <TableColumn fx:id="allEmailColumn" prefWidth="125.5999755859375" text="email" />
                                        </columns>
                                     </TableView>
                                  </children>

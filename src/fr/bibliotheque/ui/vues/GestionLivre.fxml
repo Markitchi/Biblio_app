@@ -15,20 +15,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bibliotheque.ui.controllers.GestionLivreController">
    <children>
       <AnchorPane layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="520.0" prefWidth="244.0" styleClass="sidebar" stylesheets="@stylesheet.css">
          <children>
-            <Button alignment="CENTER" layoutY="198.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" />
-            <Button alignment="CENTER" layoutY="286.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" />
-            <Button alignment="CENTER" layoutY="370.0" mnemonicParsing="false" opacity="0.5" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" />
+            <Button fx:id="gestionLivresButton" alignment="CENTER" layoutY="198.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Livres" textAlignment="CENTER" onAction="#handleGestionLivres" />
+            <Button fx:id="gestionAdherentsButton" alignment="CENTER" layoutY="286.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Adherents" textAlignment="CENTER" onAction="#handleGestionAdherents" />
+            <Button fx:id="gestionEmpruntsButton" alignment="CENTER" layoutY="370.0" mnemonicParsing="false" opacity="0.5" prefHeight="53.0" prefWidth="235.0" styleClass="sidebtn" text="Gestion Emprunts" textAlignment="CENTER" onAction="#handleGestionEmprunts" />
             <Text fill="WHITE" layoutX="14.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonjour," wrappingWidth="177.98309516906738">
                <font>
                   <Font name="Cambria Bold" size="27.0" />
                </font>
             </Text>
-            <Button alignment="CENTER" layoutY="116.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Acceuil" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="accueilButton" alignment="CENTER" layoutY="116.0" mnemonicParsing="false" opacity="0.5" prefHeight="54.0" prefWidth="235.0" styleClass="sidebtn" stylesheets="@stylesheet.css" text="Accueil" textAlignment="CENTER" textFill="WHITE" onAction="#handleAccueil">
                <font>
                   <Font size="16.0" />
                </font>
@@ -47,20 +46,20 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <TextField layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="Titre, auteur, ISBN," />
-                                          <Button layoutX="398.0" layoutY="10.0" mnemonicParsing="false" text="Rechercher" />
+                                          <TextField fx:id="searchField" layoutX="39.0" layoutY="10.0" prefHeight="26.0" prefWidth="222.0" promptText="Titre, auteur, ISBN," />
+                                          <Button fx:id="searchButton" layoutX="398.0" layoutY="10.0" mnemonicParsing="false" text="Rechercher" onAction="#handleSearch" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <TableView layoutX="1.0" layoutY="2.0" prefHeight="514.0" prefWidth="560.0">
+                                          <TableView fx:id="searchResultsTable" layoutX="1.0" layoutY="2.0" prefHeight="514.0" prefWidth="560.0">
                                             <columns>
-                                              <TableColumn prefWidth="42.399948835372925" text="ID" />
-                                              <TableColumn prefWidth="171.99993515014648" text="Titre" />
-                                                <TableColumn prefWidth="116.80000305175781" text="Auteurs" />
-                                                <TableColumn prefWidth="113.60003662109375" text="ISBN" />
-                                                <TableColumn prefWidth="60.0001220703125" text="Annee" />
-                                                <TableColumn prefWidth="47.199951171875" text="Dispo" />
+                                              <TableColumn fx:id="idColumn" prefWidth="42.399948835372925" text="ID" />
+                                              <TableColumn fx:id="titreColumn" prefWidth="171.99993515014648" text="Titre" />
+                                              <TableColumn fx:id="auteursColumn" prefWidth="116.80000305175781" text="Auteurs" />
+                                              <TableColumn fx:id="isbnColumn" prefWidth="113.60003662109375" text="ISBN" />
+                                              <TableColumn fx:id="anneeColumn" prefWidth="60.0001220703125" text="Annee" />
+                                              <TableColumn fx:id="dispoColumn" prefWidth="47.199951171875" text="Dispo" />
                                             </columns>
                                           </TableView>
                                        </children>
@@ -78,10 +77,10 @@
                               <AnchorPane layoutX="-1.0" prefHeight="54.0" prefWidth="560.0" />
                               <AnchorPane layoutY="151.0" prefHeight="322.0" prefWidth="560.0" stylesheets="@stylesheet.css">
                                  <children>
-                                    <TextField layoutX="205.0" layoutY="53.0" promptText="Titre " />
-                                    <TextField layoutX="205.0" layoutY="100.0" promptText="Auteur(s)" />
-                                    <TextField layoutX="206.0" layoutY="147.0" promptText="ISBN" />
-                                    <TextField layoutX="207.0" layoutY="190.0" promptText="Annee publication" />
+                                    <TextField fx:id="titreField" layoutX="205.0" layoutY="53.0" promptText="Titre " />
+                                    <TextField fx:id="auteurField" layoutX="205.0" layoutY="100.0" promptText="Auteur(s)" />
+                                    <TextField fx:id="isbnField" layoutX="206.0" layoutY="147.0" promptText="ISBN" />
+                                    <TextField fx:id="anneeField" layoutX="207.0" layoutY="190.0" promptText="Annee publication" />
                                     <Label layoutX="148.0" layoutY="56.0" text="Titre">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
@@ -102,7 +101,7 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="228.0" layoutY="255.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Ajouter" />
+                                    <Button fx:id="ajouterButton" layoutX="228.0" layoutY="255.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Ajouter" onAction="#handleAjouter" />
                                     <VBox prefHeight="200.0" prefWidth="100.0" />
                                  </children>
                               </AnchorPane>
@@ -126,10 +125,10 @@
                               </Text>
                               <AnchorPane layoutX="-6.0" layoutY="111.0" prefHeight="378.0" prefWidth="560.0" stylesheets="@stylesheet.css">
                                  <children>
-                                    <TextField layoutX="205.0" layoutY="53.0" promptText="Titre " />
-                                    <TextField layoutX="205.0" layoutY="100.0" promptText="Auteur(s)" />
-                                    <TextField layoutX="206.0" layoutY="147.0" promptText="ISBN" />
-                                    <TextField layoutX="207.0" layoutY="190.0" promptText="Annee publication" />
+                                    <TextField fx:id="modifTitreField" layoutX="205.0" layoutY="53.0" promptText="Titre " />
+                                    <TextField fx:id="modifAuteurField" layoutX="205.0" layoutY="100.0" promptText="Auteur(s)" />
+                                    <TextField fx:id="modifIsbnField" layoutX="206.0" layoutY="147.0" promptText="ISBN" />
+                                    <TextField fx:id="modifAnneeField" layoutX="207.0" layoutY="190.0" promptText="Annee publication" />
                                     <Label layoutX="148.0" layoutY="56.0" text="Titre">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
@@ -150,15 +149,15 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Button layoutX="226.0" layoutY="322.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Modifier" />
+                                    <Button fx:id="modifierButton" layoutX="226.0" layoutY="322.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Modifier" onAction="#handleModifier" />
                                     <VBox prefHeight="200.0" prefWidth="100.0" />
-                                    <TextField layoutX="205.0" layoutY="236.0" promptText="1 si disponible et 0 sinon" />
+                                    <TextField fx:id="modifDispoField" layoutX="205.0" layoutY="236.0" promptText="1 si disponible et 0 sinon" />
                                     <Label layoutX="98.0" layoutY="233.0" prefHeight="32.0" prefWidth="98.0" text="Disponibilité">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField layoutX="205.0" layoutY="277.0" promptText="Id" />
+                                    <TextField fx:id="modifIdField" layoutX="205.0" layoutY="277.0" promptText="Id" />
                                     <Label layoutX="106.0" layoutY="274.0" prefHeight="32.0" prefWidth="81.0" text="ID du Livre">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
@@ -179,13 +178,13 @@
                                     <Font name="System Bold" size="36.0" />
                                  </font>
                               </Text>
-                              <TextField layoutX="256.0" layoutY="240.0" promptText="ID" />
+                              <TextField fx:id="deleteIdField" layoutX="256.0" layoutY="240.0" promptText="ID" />
                               <Label layoutX="153.0" layoutY="237.0" prefHeight="32.0" prefWidth="81.0" text="ID du Livre">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="235.0" layoutY="337.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Supprimer" textFill="#d90a0a" />
+                              <Button fx:id="supprimerButton" layoutX="235.0" layoutY="337.0" mnemonicParsing="false" stylesheets="@stylesheet.css" text="Supprimer" textFill="#d90a0a" onAction="#handleSupprimer" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -194,14 +193,14 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView prefHeight="569.0" prefWidth="560.0">
+                              <TableView fx:id="allLivresTable" prefHeight="569.0" prefWidth="560.0">
                                  <columns>
-                                    <TableColumn prefWidth="42.399948835372925" text="ID" />
-                                    <TableColumn prefWidth="171.99993515014648" text="Titre" />
-                                    <TableColumn prefWidth="116.80000305175781" text="Auteurs" />
-                                    <TableColumn prefWidth="113.60003662109375" text="ISBN" />
-                                    <TableColumn prefWidth="60.0001220703125" text="Annee" />
-                                    <TableColumn prefWidth="47.199951171875" text="Dispo" />
+                                    <TableColumn fx:id="allIdColumn" prefWidth="42.399948835372925" text="ID" />
+                                    <TableColumn fx:id="allTitreColumn" prefWidth="171.99993515014648" text="Titre" />
+                                    <TableColumn fx:id="allAuteursColumn" prefWidth="116.80000305175781" text="Auteurs" />
+                                    <TableColumn fx:id="allIsbnColumn" prefWidth="113.60003662109375" text="ISBN" />
+                                    <TableColumn fx:id="allAnneeColumn" prefWidth="60.0001220703125" text="Annee" />
+                                    <TableColumn fx:id="allDispoColumn" prefWidth="47.199951171875" text="Dispo" />
                                  </columns>
                               </TableView>
                            </children>

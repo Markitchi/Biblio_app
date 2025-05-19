@@ -13,6 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import fr.bibliotheque.service.GestionnaireImpl;
 import fr.bibliotheque.metier.Adherent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class GestionAdherentsController {
     @FXML
@@ -28,55 +30,57 @@ public class GestionAdherentsController {
     @FXML
     private TextField searchField;
     @FXML
-    private TableView<Adherent> searchTable;
+    private Button searchButton;
     @FXML
-    private TableColumn<Adherent, Integer> searchIdColumn;
+    private TableView<Adherent> searchResultsTable;
     @FXML
-    private TableColumn<Adherent, String> searchNomColumn;
+    private TableColumn<Adherent, Integer> idColumn;
     @FXML
-    private TableColumn<Adherent, String> searchPrenomColumn;
+    private TableColumn<Adherent, String> nomColumn;
     @FXML
-    private TableColumn<Adherent, String> searchAdresseColumn;
+    private TableColumn<Adherent, String> prenomColumn;
     @FXML
-    private TableColumn<Adherent, String> searchTelephoneColumn;
+    private TableColumn<Adherent, String> adresseColumn;
     @FXML
-    private TableColumn<Adherent, String> searchEmailColumn;
+    private TableColumn<Adherent, String> telephoneColumn;
+    @FXML
+    private TableColumn<Adherent, String> emailColumn;
 
     // Ajout
     @FXML
-    private TextField addNomField;
+    private TextField nomField;
     @FXML
-    private TextField addPrenomField;
+    private TextField prenomField;
     @FXML
-    private TextField addAdresseField;
+    private TextField adresseField;
     @FXML
-    private TextField addTelephoneField;
+    private TextField telephoneField;
     @FXML
-    private TextField addEmailField;
+    private TextField emailField;
     @FXML
-    private Button addButton;
+    private Button ajouterButton;
 
     // Modification
     @FXML
-    private TextField modIdField;
+    private TextField modifNomField;
     @FXML
-    private TextField modNomField;
+    private TextField modifPrenomField;
     @FXML
-    private TextField modPrenomField;
+    private TextField modifAdresseField;
     @FXML
-    private TextField modAdresseField;
+    private TextField modifTelephoneField;
     @FXML
-    private TextField modTelephoneField;
+    private TextField modifEmailField;
     @FXML
-    private TextField modEmailField;
+    private TextField modifIdField;
     @FXML
-    private Button modButton;
+    private Button modifierButton;
 
     // Suppression
     @FXML
     private TextField deleteIdField;
     @FXML
-    private Button deleteButton;
+    private Button supprimerButton;
 
     // Liste complète
     @FXML
@@ -107,20 +111,20 @@ public class GestionAdherentsController {
         gestionEmpruntsButton.setOnAction(e -> handleNavigation("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml"));
 
         // Configuration des colonnes de recherche
-        configureTableColumns(searchIdColumn, searchNomColumn, searchPrenomColumn, 
-                            searchAdresseColumn, searchTelephoneColumn, searchEmailColumn);
+        configureTableColumns(idColumn, nomColumn, prenomColumn, 
+                            adresseColumn, telephoneColumn, emailColumn);
         
         // Configuration des colonnes de la liste complète
         configureTableColumns(allIdColumn, allNomColumn, allPrenomColumn, 
                             allAdresseColumn, allTelephoneColumn, allEmailColumn);
 
         // Initialisation des actions des boutons
-        addButton.setOnAction(e -> handleAddAdherent());
-        modButton.setOnAction(e -> handleModifyAdherent());
-        deleteButton.setOnAction(e -> handleDeleteAdherent());
+        ajouterButton.setOnAction(e -> handleAjouter());
+        modifierButton.setOnAction(e -> handleModifier());
+        supprimerButton.setOnAction(e -> handleSupprimer());
 
         // Chargement initial des adhérents
-        refreshAllAdherentsTable();
+        loadAllAdherents();
     }
 
     private void configureTableColumns(TableColumn<Adherent, Integer> idCol,
@@ -150,105 +154,100 @@ public class GestionAdherentsController {
         }
     }
 
-    private void handleAddAdherent() {
+    private void loadAllAdherents() {
+        ObservableList<Adherent> adherents = FXCollections.observableArrayList(gestionnaire.getAllAdherents());
+        allAdherentsTable.setItems(adherents);
+    }
+
+    @FXML
+    public void handleSearch() {
+        String searchTerm = searchField.getText();
+        ObservableList<Adherent> results = FXCollections.observableArrayList(gestionnaire.searchAdherents(searchTerm));
+        searchResultsTable.setItems(results);
+    }
+
+    @FXML
+    public void handleAjouter() {
         try {
-            String nom = addNomField.getText();
-            String prenom = addPrenomField.getText();
-            String adresse = addAdresseField.getText();
-            String telephone = addTelephoneField.getText();
-            String email = addEmailField.getText();
-
             Adherent adherent = new Adherent();
-            adherent.setNom(nom);
-            adherent.setPrenom(prenom);
-            adherent.setAdresse(adresse);
-            adherent.setTelephone(telephone);
-            adherent.setEmail(email);
+            adherent.setNom(nomField.getText());
+            adherent.setPrenom(prenomField.getText());
+            adherent.setAdresse(adresseField.getText());
+            adherent.setTelephone(telephoneField.getText());
+            adherent.setEmail(emailField.getText());
 
-            if (gestionnaire.ajouterAdherent(adherent)) {
-                clearAddFields();
-                refreshAllAdherentsTable();
-            } else {
-                showError("Erreur lors de l'ajout de l'adhérent");
-            }
+            gestionnaire.addAdherent(adherent);
+            clearAddFields();
+            loadAllAdherents();
+            showAlert("Succès", "Adhérent ajouté avec succès", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
-            showError("Erreur lors de l'ajout de l'adhérent: " + e.getMessage());
+            showAlert("Erreur", "Erreur lors de l'ajout de l'adhérent: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void handleModifyAdherent() {
+    @FXML
+    public void handleModifier() {
         try {
-            int id = Integer.parseInt(modIdField.getText());
-            String nom = modNomField.getText();
-            String prenom = modPrenomField.getText();
-            String adresse = modAdresseField.getText();
-            String telephone = modTelephoneField.getText();
-            String email = modEmailField.getText();
+            int id = Integer.parseInt(modifIdField.getText());
+            Adherent adherent = gestionnaire.getAdherentById(id);
+            if (adherent != null) {
+                adherent.setNom(modifNomField.getText());
+                adherent.setPrenom(modifPrenomField.getText());
+                adherent.setAdresse(modifAdresseField.getText());
+                adherent.setTelephone(modifTelephoneField.getText());
+                adherent.setEmail(modifEmailField.getText());
 
-            Adherent adherent = new Adherent();
-            adherent.setId(id);
-            adherent.setNom(nom);
-            adherent.setPrenom(prenom);
-            adherent.setAdresse(adresse);
-            adherent.setTelephone(telephone);
-            adherent.setEmail(email);
-
-            if (gestionnaire.modifierAdherent(adherent)) {
+                gestionnaire.updateAdherent(adherent);
                 clearModifyFields();
-                refreshAllAdherentsTable();
+                loadAllAdherents();
+                showAlert("Succès", "Adhérent modifié avec succès", Alert.AlertType.INFORMATION);
             } else {
-                showError("Erreur lors de la modification de l'adhérent");
+                showAlert("Erreur", "Adhérent non trouvé", Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
-            showError("Erreur lors de la modification de l'adhérent: " + e.getMessage());
+            showAlert("Erreur", "Erreur lors de la modification de l'adhérent: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void handleDeleteAdherent() {
+    @FXML
+    public void handleSupprimer() {
         try {
             int id = Integer.parseInt(deleteIdField.getText());
-            if (gestionnaire.supprimerAdherent(id)) {
-                clearDeleteFields();
-                refreshAllAdherentsTable();
-            } else {
-                showError("Erreur lors de la suppression de l'adhérent");
-            }
+            gestionnaire.deleteAdherent(id);
+            clearDeleteFields();
+            loadAllAdherents();
+            showAlert("Succès", "Adhérent supprimé avec succès", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
-            showError("Erreur lors de la suppression de l'adhérent: " + e.getMessage());
+            showAlert("Erreur", "Erreur lors de la suppression de l'adhérent: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-    }
-
-    private void refreshAllAdherentsTable() {
-        allAdherentsTable.getItems().clear();
-        allAdherentsTable.getItems().addAll(gestionnaire.listerTousAdherents());
     }
 
     private void clearAddFields() {
-        addNomField.clear();
-        addPrenomField.clear();
-        addAdresseField.clear();
-        addTelephoneField.clear();
-        addEmailField.clear();
+        nomField.clear();
+        prenomField.clear();
+        adresseField.clear();
+        telephoneField.clear();
+        emailField.clear();
     }
 
     private void clearModifyFields() {
-        modIdField.clear();
-        modNomField.clear();
-        modPrenomField.clear();
-        modAdresseField.clear();
-        modTelephoneField.clear();
-        modEmailField.clear();
+        modifIdField.clear();
+        modifNomField.clear();
+        modifPrenomField.clear();
+        modifAdresseField.clear();
+        modifTelephoneField.clear();
+        modifEmailField.clear();
     }
 
     private void clearDeleteFields() {
         deleteIdField.clear();
     }
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
+    private void showAlert(String title, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 } 

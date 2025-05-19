@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import fr.bibliotheque.service.GestionnaireImpl;
 import fr.bibliotheque.metier.Emprunt;
 import java.util.Date;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import java.time.LocalDate;
 
 public class GestionEmpruntsController {
     @FXML
@@ -28,23 +31,29 @@ public class GestionEmpruntsController {
     
     // Emprunts en cours
     @FXML
-    private TableView<Emprunt> enCoursTable;
+    private TableView<Emprunt> empruntsEnCoursTable;
     @FXML
-    private TableColumn<Emprunt, Integer> enCoursIdColumn;
+    private TableColumn<Emprunt, Integer> idColumn;
     @FXML
-    private TableColumn<Emprunt, Integer> enCoursLivreIdColumn;
+    private TableColumn<Emprunt, Integer> livreIdColumn;
     @FXML
-    private TableColumn<Emprunt, Integer> enCoursAdherentIdColumn;
+    private TableColumn<Emprunt, Integer> adherentIdColumn;
     @FXML
-    private TableColumn<Emprunt, Date> enCoursDateEmpruntColumn;
+    private TableColumn<Emprunt, LocalDate> dateEmpruntColumn;
     @FXML
-    private TableColumn<Emprunt, Date> enCoursDateRetourPrevueColumn;
+    private TableColumn<Emprunt, LocalDate> dateRetourPrevueColumn;
+    @FXML
+    private TableColumn<Emprunt, LocalDate> dateRetourEffectiveColumn;
+    @FXML
+    private TableColumn<Emprunt, Boolean> retourneColumn;
 
     // Recherche
     @FXML
     private TextField searchField;
     @FXML
-    private TableView<Emprunt> searchTable;
+    private Button searchButton;
+    @FXML
+    private TableView<Emprunt> searchResultsTable;
     @FXML
     private TableColumn<Emprunt, Integer> searchIdColumn;
     @FXML
@@ -52,29 +61,31 @@ public class GestionEmpruntsController {
     @FXML
     private TableColumn<Emprunt, Integer> searchAdherentIdColumn;
     @FXML
-    private TableColumn<Emprunt, Date> searchDateEmpruntColumn;
+    private TableColumn<Emprunt, LocalDate> searchDateEmpruntColumn;
     @FXML
-    private TableColumn<Emprunt, Date> searchDateRetourPrevueColumn;
+    private TableColumn<Emprunt, LocalDate> searchDateRetourPrevueColumn;
     @FXML
-    private TableColumn<Emprunt, Date> searchDateRetourEffectiveColumn;
+    private TableColumn<Emprunt, LocalDate> searchDateRetourEffectiveColumn;
+    @FXML
+    private TableColumn<Emprunt, Boolean> searchRetourneColumn;
 
     // Emprunt
     @FXML
-    private TextField empruntLivreIdField;
+    private TextField livreIdField;
     @FXML
-    private TextField empruntAdherentIdField;
+    private TextField adherentIdField;
     @FXML
-    private DatePicker empruntDatePicker;
+    private DatePicker dateEmpruntPicker;
     @FXML
-    private Button empruntButton;
+    private DatePicker dateRetourPicker;
+    @FXML
+    private Button enregistrerButton;
 
     // Retour
     @FXML
-    private TextField retourIdField;
+    private TextField empruntIdField;
     @FXML
-    private DatePicker retourDatePicker;
-    @FXML
-    private Button retourButton;
+    private Button retournerButton;
 
     private GestionnaireImpl gestionnaire;
 
@@ -95,19 +106,21 @@ public class GestionEmpruntsController {
         configureSearchColumns();
 
         // Initialisation des actions des boutons
-        empruntButton.setOnAction(e -> handleEmprunt());
-        retourButton.setOnAction(e -> handleRetour());
+        enregistrerButton.setOnAction(e -> handleEmprunt());
+        retournerButton.setOnAction(e -> handleRetour());
 
         // Chargement initial des emprunts en cours
-        refreshEnCoursTable();
+        loadEmpruntsEnCours();
     }
 
     private void configureEnCoursColumns() {
-        enCoursIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        enCoursLivreIdColumn.setCellValueFactory(new PropertyValueFactory<>("livreId"));
-        enCoursAdherentIdColumn.setCellValueFactory(new PropertyValueFactory<>("adherentId"));
-        enCoursDateEmpruntColumn.setCellValueFactory(new PropertyValueFactory<>("dateEmprunt"));
-        enCoursDateRetourPrevueColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourPrevue"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        livreIdColumn.setCellValueFactory(new PropertyValueFactory<>("livreId"));
+        adherentIdColumn.setCellValueFactory(new PropertyValueFactory<>("adherentId"));
+        dateEmpruntColumn.setCellValueFactory(new PropertyValueFactory<>("dateEmprunt"));
+        dateRetourPrevueColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourPrevue"));
+        dateRetourEffectiveColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourEffective"));
+        retourneColumn.setCellValueFactory(new PropertyValueFactory<>("retourne"));
     }
 
     private void configureSearchColumns() {
@@ -117,6 +130,7 @@ public class GestionEmpruntsController {
         searchDateEmpruntColumn.setCellValueFactory(new PropertyValueFactory<>("dateEmprunt"));
         searchDateRetourPrevueColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourPrevue"));
         searchDateRetourEffectiveColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourEffective"));
+        searchRetourneColumn.setCellValueFactory(new PropertyValueFactory<>("retourne"));
     }
 
     private void handleNavigation(String fxmlPath) {
@@ -132,67 +146,71 @@ public class GestionEmpruntsController {
         }
     }
 
+    private void loadEmpruntsEnCours() {
+        ObservableList<Emprunt> emprunts = FXCollections.observableArrayList(gestionnaire.getEmpruntsEnCours());
+        empruntsEnCoursTable.setItems(emprunts);
+    }
+
     private void handleEmprunt() {
         try {
-            int livreId = Integer.parseInt(empruntLivreIdField.getText());
-            int adherentId = Integer.parseInt(empruntAdherentIdField.getText());
-            Date dateEmprunt = new Date(); // Date actuelle
-            Date dateRetourPrevue = new Date(dateEmprunt.getTime() + (14 * 24 * 60 * 60 * 1000L)); // +14 jours
+            int livreId = Integer.parseInt(livreIdField.getText());
+            int adherentId = Integer.parseInt(adherentIdField.getText());
+            LocalDate dateEmprunt = dateEmpruntPicker.getValue();
+            LocalDate dateRetour = dateRetourPicker.getValue();
+
+            if (dateEmprunt == null || dateRetour == null) {
+                showAlert("Erreur", "Veuillez sélectionner les dates d'emprunt et de retour", Alert.AlertType.ERROR);
+                return;
+            }
 
             Emprunt emprunt = new Emprunt();
             emprunt.setLivreId(livreId);
             emprunt.setAdherentId(adherentId);
             emprunt.setDateEmprunt(dateEmprunt);
-            emprunt.setDateRetourPrevue(dateRetourPrevue);
+            emprunt.setDateRetourPrevue(dateRetour);
+            emprunt.setRetourne(false);
 
-            if (gestionnaire.emprunterLivre(emprunt)) {
-                clearEmpruntFields();
-                refreshEnCoursTable();
-            } else {
-                showError("Erreur lors de l'emprunt du livre");
-            }
+            gestionnaire.addEmprunt(emprunt);
+            clearEmpruntFields();
+            loadEmpruntsEnCours();
+            showAlert("Succès", "Emprunt enregistré avec succès", Alert.AlertType.INFORMATION);
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Veuillez entrer des IDs valides", Alert.AlertType.ERROR);
         } catch (Exception e) {
-            showError("Erreur lors de l'emprunt du livre: " + e.getMessage());
+            showAlert("Erreur", "Erreur lors de l'enregistrement de l'emprunt: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     private void handleRetour() {
         try {
-            int id = Integer.parseInt(retourIdField.getText());
-            Date dateRetour = new Date(); // Date actuelle
-
-            if (gestionnaire.retournerLivre(id, dateRetour)) {
-                clearRetourFields();
-                refreshEnCoursTable();
-            } else {
-                showError("Erreur lors du retour du livre");
-            }
+            int empruntId = Integer.parseInt(empruntIdField.getText());
+            gestionnaire.retournerLivre(empruntId);
+            clearRetournerFields();
+            loadEmpruntsEnCours();
+            showAlert("Succès", "Livre retourné avec succès", Alert.AlertType.INFORMATION);
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Veuillez entrer un ID d'emprunt valide", Alert.AlertType.ERROR);
         } catch (Exception e) {
-            showError("Erreur lors du retour du livre: " + e.getMessage());
+            showAlert("Erreur", "Erreur lors du retour du livre: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void refreshEnCoursTable() {
-        enCoursTable.getItems().clear();
-        enCoursTable.getItems().addAll(gestionnaire.listerEmpruntsEnCours());
-    }
-
     private void clearEmpruntFields() {
-        empruntLivreIdField.clear();
-        empruntAdherentIdField.clear();
-        empruntDatePicker.setValue(null);
+        livreIdField.clear();
+        adherentIdField.clear();
+        dateEmpruntPicker.setValue(null);
+        dateRetourPicker.setValue(null);
     }
 
-    private void clearRetourFields() {
-        retourIdField.clear();
-        retourDatePicker.setValue(null);
+    private void clearRetournerFields() {
+        empruntIdField.clear();
     }
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
+    private void showAlert(String title, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 } 

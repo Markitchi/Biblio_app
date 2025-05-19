@@ -18,20 +18,54 @@ public class DashController {
     private Button gestionEmpruntsButton;
 
     @FXML
-    public void initialize() {
-        // Initialisation des boutons
-        accueilButton.setOnAction(e -> handleNavigation("/fr/bibliotheque/ui/vues/Dash.fxml"));
-        gestionLivresButton.setOnAction(e -> handleNavigation("/fr/bibliotheque/ui/vues/GestionLivre.fxml"));
-        gestionAdherentsButton.setOnAction(e -> handleNavigation("/fr/bibliotheque/ui/vues/GestionAdherents.fxml"));
-        gestionEmpruntsButton.setOnAction(e -> handleNavigation("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml"));
-    }
-
-    private void handleNavigation(String fxmlPath) {
+    public void handleAccueil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/Dash.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) accueilButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleGestionLivres() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/GestionLivre.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) gestionLivresButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleGestionAdherents() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/GestionAdherents.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) gestionAdherentsButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleGestionEmprunts() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/GestionEmprunts.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) gestionEmpruntsButton.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
