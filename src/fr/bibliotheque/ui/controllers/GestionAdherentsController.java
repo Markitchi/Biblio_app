@@ -155,14 +155,14 @@ public class GestionAdherentsController {
     }
 
     private void loadAllAdherents() {
-        ObservableList<Adherent> adherents = FXCollections.observableArrayList(gestionnaire.getAllAdherents());
+        ObservableList<Adherent> adherents = FXCollections.observableArrayList(gestionnaire.listerTousAdherents());
         allAdherentsTable.setItems(adherents);
     }
 
     @FXML
     public void handleSearch() {
         String searchTerm = searchField.getText();
-        ObservableList<Adherent> results = FXCollections.observableArrayList(gestionnaire.searchAdherents(searchTerm));
+        ObservableList<Adherent> results = FXCollections.observableArrayList(gestionnaire.rechercherAdherent(searchTerm));
         searchResultsTable.setItems(results);
     }
 
@@ -176,7 +176,7 @@ public class GestionAdherentsController {
             adherent.setTelephone(telephoneField.getText());
             adherent.setEmail(emailField.getText());
 
-            gestionnaire.addAdherent(adherent);
+            gestionnaire.ajouterAdherent(adherent);
             clearAddFields();
             loadAllAdherents();
             showAlert("Succès", "Adhérent ajouté avec succès", Alert.AlertType.INFORMATION);
@@ -189,7 +189,7 @@ public class GestionAdherentsController {
     public void handleModifier() {
         try {
             int id = Integer.parseInt(modifIdField.getText());
-            Adherent adherent = gestionnaire.getAdherentById(id);
+            Adherent adherent = gestionnaire.getAdherentParId(id);
             if (adherent != null) {
                 adherent.setNom(modifNomField.getText());
                 adherent.setPrenom(modifPrenomField.getText());
@@ -197,7 +197,7 @@ public class GestionAdherentsController {
                 adherent.setTelephone(modifTelephoneField.getText());
                 adherent.setEmail(modifEmailField.getText());
 
-                gestionnaire.updateAdherent(adherent);
+                gestionnaire.modifierAdherent(adherent);
                 clearModifyFields();
                 loadAllAdherents();
                 showAlert("Succès", "Adhérent modifié avec succès", Alert.AlertType.INFORMATION);

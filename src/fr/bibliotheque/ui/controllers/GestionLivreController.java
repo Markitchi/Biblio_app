@@ -91,14 +91,14 @@ public class GestionLivreController {
     }
 
     private void loadAllLivres() {
-        ObservableList<Livre> livres = FXCollections.observableArrayList(gestionnaire.getAllLivres());
+        ObservableList<Livre> livres = FXCollections.observableArrayList(gestionnaire.listerTousLivres());
         allLivresTable.setItems(livres);
     }
 
     @FXML
     public void handleSearch() {
         String searchTerm = searchField.getText();
-        ObservableList<Livre> results = FXCollections.observableArrayList(gestionnaire.searchLivres(searchTerm));
+        ObservableList<Livre> results = FXCollections.observableArrayList(gestionnaire.rechercherLivre(searchTerm));
         searchResultsTable.setItems(results);
     }
 
@@ -112,7 +112,7 @@ public class GestionLivreController {
             livre.setAnneePublication(Integer.parseInt(anneeField.getText()));
             livre.setDisponible(true);
 
-            gestionnaire.addLivre(livre);
+            gestionnaire.ajouterLivre(livre);
             clearAddFields();
             loadAllLivres();
             showAlert("Succès", "Livre ajouté avec succès", Alert.AlertType.INFORMATION);
@@ -125,7 +125,7 @@ public class GestionLivreController {
     public void handleModifier() {
         try {
             int id = Integer.parseInt(modifIdField.getText());
-            Livre livre = gestionnaire.getLivreById(id);
+            Livre livre = gestionnaire.getLivreParId(id);
             if (livre != null) {
                 livre.setTitre(modifTitreField.getText());
                 livre.setAuteur(modifAuteurField.getText());
@@ -133,7 +133,7 @@ public class GestionLivreController {
                 livre.setAnneePublication(Integer.parseInt(modifAnneeField.getText()));
                 livre.setDisponible(Integer.parseInt(modifDispoField.getText()) == 1);
 
-                gestionnaire.updateLivre(livre);
+                gestionnaire.modifierLivre(livre);
                 clearModifyFields();
                 loadAllLivres();
                 showAlert("Succès", "Livre modifié avec succès", Alert.AlertType.INFORMATION);
@@ -149,7 +149,7 @@ public class GestionLivreController {
     public void handleSupprimer() {
         try {
             int id = Integer.parseInt(deleteIdField.getText());
-            gestionnaire.deleteLivre(id);
+            gestionnaire.supprimerLivre(id);
             clearDeleteFields();
             loadAllLivres();
             showAlert("Succès", "Livre supprimé avec succès", Alert.AlertType.INFORMATION);

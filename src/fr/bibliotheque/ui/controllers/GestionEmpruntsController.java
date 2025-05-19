@@ -106,7 +106,7 @@ public class GestionEmpruntsController {
         configureSearchColumns();
 
         // Initialisation des actions des boutons
-        enregistrerButton.setOnAction(e -> handleEmprunt());
+        enregistrerButton.setOnAction(e -> handleEmprunter());
         retournerButton.setOnAction(e -> handleRetour());
 
         // Chargement initial des emprunts en cours
@@ -147,35 +147,26 @@ public class GestionEmpruntsController {
     }
 
     private void loadEmpruntsEnCours() {
-        ObservableList<Emprunt> emprunts = FXCollections.observableArrayList(gestionnaire.getEmpruntsEnCours());
+        ObservableList<Emprunt> emprunts = FXCollections.observableArrayList(gestionnaire.listerEmpruntsEnCours());
         empruntsEnCoursTable.setItems(emprunts);
     }
 
-    private void handleEmprunt() {
+    @FXML
+    public void handleEmprunter() {
         try {
             int livreId = Integer.parseInt(livreIdField.getText());
             int adherentId = Integer.parseInt(adherentIdField.getText());
-            LocalDate dateEmprunt = dateEmpruntPicker.getValue();
-            LocalDate dateRetour = dateRetourPicker.getValue();
-
-            if (dateEmprunt == null || dateRetour == null) {
-                showAlert("Erreur", "Veuillez sélectionner les dates d'emprunt et de retour", Alert.AlertType.ERROR);
-                return;
-            }
-
+            
             Emprunt emprunt = new Emprunt();
             emprunt.setLivreId(livreId);
             emprunt.setAdherentId(adherentId);
-            emprunt.setDateEmprunt(dateEmprunt);
-            emprunt.setDateRetourPrevue(dateRetour);
-            emprunt.setRetourne(false);
-
-            gestionnaire.addEmprunt(emprunt);
+            emprunt.setDateEmprunt(LocalDate.now());
+            emprunt.setDateRetourPrevue(LocalDate.now().plusDays(14));
+            
+            gestionnaire.enregistrerEmprunt(emprunt);
             clearEmpruntFields();
             loadEmpruntsEnCours();
             showAlert("Succès", "Emprunt enregistré avec succès", Alert.AlertType.INFORMATION);
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "Veuillez entrer des IDs valides", Alert.AlertType.ERROR);
         } catch (Exception e) {
             showAlert("Erreur", "Erreur lors de l'enregistrement de l'emprunt: " + e.getMessage(), Alert.AlertType.ERROR);
         }
