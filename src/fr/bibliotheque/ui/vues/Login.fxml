@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="fr.bibliotheque.ui.controllers.LoginController" stylesheets="@Login.css">
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="fr.bibliotheque.ui.controllers.LoginController" stylesheets="@stylesheet.css">
     <AnchorPane>
         <VBox alignment="CENTER" spacing="18.0" maxWidth="350" maxHeight="420" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" styleClass="login-card">
             <ImageView fx:id="logoImage" fitWidth="80" fitHeight="80" pickOnBounds="true" preserveRatio="true"/>

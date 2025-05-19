@@ -101,7 +101,7 @@ public class AdministrateurDAOImpl implements AdministrateurDAO{
 
         try(PreparedStatement pstmt = connexion.prepareStatement(sql)){
             pstmt.setString(1, login);
-            pstmt.setString(1, motDePasse);
+            pstmt.setString(2, motDePasse);
 
             ResultSet rs = pstmt.executeQuery();
 
