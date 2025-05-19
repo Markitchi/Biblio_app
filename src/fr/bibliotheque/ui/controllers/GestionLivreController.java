@@ -6,7 +6,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import fr.bibliotheque.metier.Livre;
-import fr.bibliotheque.service.LivreService;
+import fr.bibliotheque.service.GestionnaireImpl;
 
 public class GestionLivreController extends BaseController {
     @FXML
@@ -69,20 +69,20 @@ public class GestionLivreController extends BaseController {
     @FXML
     private TextField supprIdField;
     
-    private LivreService livreService;
+    private GestionnaireImpl gestionnaire;
     private ObservableList<Livre> livresList;
     
     @FXML
     public void initialize() {
-        livreService = new LivreService();
+        gestionnaire = new GestionnaireImpl();
         livresList = FXCollections.observableArrayList();
         
         // Configuration des colonnes
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         titreColumn.setCellValueFactory(new PropertyValueFactory<>("titre"));
-        auteursColumn.setCellValueFactory(new PropertyValueFactory<>("auteurs"));
+        auteursColumn.setCellValueFactory(new PropertyValueFactory<>("auteur"));
         isbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        anneeColumn.setCellValueFactory(new PropertyValueFactory<>("annee"));
+        anneeColumn.setCellValueFactory(new PropertyValueFactory<>("anneePublication"));
         dispoColumn.setCellValueFactory(new PropertyValueFactory<>("disponible"));
         
         // Charger tous les livres
@@ -91,7 +91,7 @@ public class GestionLivreController extends BaseController {
     
     private void loadLivres() {
         livresList.clear();
-        livresList.addAll(livreService.getAllLivres());
+        livresList.addAll(gestionnaire.listerTousLivres());
         livresTable.setItems(livresList);
     }
     
@@ -104,33 +104,35 @@ public class GestionLivreController extends BaseController {
         }
         
         livresList.clear();
-        livresList.addAll(livreService.searchLivres(searchText));
+        livresList.addAll(gestionnaire.rechercherLivre(searchText));
     }
     
     @FXML
     private void handleAddLivre() {
         try {
             String titre = titreField.getText();
-            String auteurs = auteursField.getText();
+            String auteur = auteursField.getText();
             String isbn = isbnField.getText();
             int annee = Integer.parseInt(anneeField.getText());
             
-            if (titre.isEmpty() || auteurs.isEmpty() || isbn.isEmpty()) {
+            if (titre.isEmpty() || auteur.isEmpty() || isbn.isEmpty()) {
                 showError("Veuillez remplir tous les champs");
                 return;
             }
             
-            Livre livre = new Livre(titre, auteurs, isbn, annee, true);
-            livreService.addLivre(livre);
-            
-            // Réinitialiser les champs
-            titreField.clear();
-            auteursField.clear();
-            isbnField.clear();
-            anneeField.clear();
-            
-            // Recharger la liste
-            loadLivres();
+            Livre livre = new Livre(titre, auteur, isbn, annee);
+            if (gestionnaire.ajouterLivre(livre)) {
+                // Réinitialiser les champs
+                titreField.clear();
+                auteursField.clear();
+                isbnField.clear();
+                anneeField.clear();
+                
+                // Recharger la liste
+                loadLivres();
+            } else {
+                showError("Erreur lors de l'ajout du livre");
+            }
             
         } catch (NumberFormatException e) {
             showError("L'année doit être un nombre valide");
@@ -142,29 +144,31 @@ public class GestionLivreController extends BaseController {
         try {
             int id = Integer.parseInt(modifIdField.getText());
             String titre = modifTitreField.getText();
-            String auteurs = modifAuteursField.getText();
+            String auteur = modifAuteursField.getText();
             String isbn = modifIsbnField.getText();
             int annee = Integer.parseInt(modifAnneeField.getText());
             boolean dispo = Integer.parseInt(modifDispoField.getText()) == 1;
             
-            if (titre.isEmpty() || auteurs.isEmpty() || isbn.isEmpty()) {
+            if (titre.isEmpty() || auteur.isEmpty() || isbn.isEmpty()) {
                 showError("Veuillez remplir tous les champs");
                 return;
             }
             
-            Livre livre = new Livre(id, titre, auteurs, isbn, annee, dispo);
-            livreService.updateLivre(livre);
-            
-            // Réinitialiser les champs
-            modifIdField.clear();
-            modifTitreField.clear();
-            modifAuteursField.clear();
-            modifIsbnField.clear();
-            modifAnneeField.clear();
-            modifDispoField.clear();
-            
-            // Recharger la liste
-            loadLivres();
+            Livre livre = new Livre(id, titre, auteur, isbn, annee, dispo);
+            if (gestionnaire.modifierLivre(livre)) {
+                // Réinitialiser les champs
+                modifIdField.clear();
+                modifTitreField.clear();
+                modifAuteursField.clear();
+                modifIsbnField.clear();
+                modifAnneeField.clear();
+                modifDispoField.clear();
+                
+                // Recharger la liste
+                loadLivres();
+            } else {
+                showError("Erreur lors de la modification du livre");
+            }
             
         } catch (NumberFormatException e) {
             showError("L'ID, l'année et la disponibilité doivent être des nombres valides");
@@ -175,13 +179,15 @@ public class GestionLivreController extends BaseController {
     private void handleDeleteLivre() {
         try {
             int id = Integer.parseInt(supprIdField.getText());
-            livreService.deleteLivre(id);
-            
-            // Réinitialiser le champ
-            supprIdField.clear();
-            
-            // Recharger la liste
-            loadLivres();
+            if (gestionnaire.supprimerLivre(id)) {
+                // Réinitialiser le champ
+                supprIdField.clear();
+                
+                // Recharger la liste
+                loadLivres();
+            } else {
+                showError("Erreur lors de la suppression du livre");
+            }
             
         } catch (NumberFormatException e) {
             showError("L'ID doit être un nombre valide");
@@ -190,7 +196,6 @@ public class GestionLivreController extends BaseController {
     
     @Override
     protected void showError(String message) {
-        // Implémentation de l'affichage des erreurs
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);

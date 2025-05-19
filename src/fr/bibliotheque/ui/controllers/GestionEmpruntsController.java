@@ -6,8 +6,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import fr.bibliotheque.metier.Emprunt;
-import fr.bibliotheque.service.EmpruntService;
+import fr.bibliotheque.service.GestionnaireImpl;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class GestionEmpruntsController extends BaseController {
     @FXML
@@ -26,13 +28,13 @@ public class GestionEmpruntsController extends BaseController {
     private TableColumn<Emprunt, Integer> idAdherentColumn;
     
     @FXML
-    private TableColumn<Emprunt, LocalDate> dateEmpruntColumn;
+    private TableColumn<Emprunt, Date> dateEmpruntColumn;
     
     @FXML
-    private TableColumn<Emprunt, LocalDate> dateRetourPrevueColumn;
+    private TableColumn<Emprunt, Date> dateRetourPrevueColumn;
     
     @FXML
-    private TableColumn<Emprunt, LocalDate> dateRetourEffectifColumn;
+    private TableColumn<Emprunt, Date> dateRetourEffectifColumn;
     
     @FXML
     private TableColumn<Emprunt, Boolean> retourneColumn;
@@ -54,21 +56,21 @@ public class GestionEmpruntsController extends BaseController {
     @FXML
     private TextField idEmpruntField;
     
-    private EmpruntService empruntService;
+    private GestionnaireImpl gestionnaire;
     private ObservableList<Emprunt> empruntsList;
     
     @FXML
     public void initialize() {
-        empruntService = new EmpruntService();
+        gestionnaire = new GestionnaireImpl();
         empruntsList = FXCollections.observableArrayList();
         
         // Configuration des colonnes
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idLivreColumn.setCellValueFactory(new PropertyValueFactory<>("idLivre"));
-        idAdherentColumn.setCellValueFactory(new PropertyValueFactory<>("idAdherent"));
+        idLivreColumn.setCellValueFactory(new PropertyValueFactory<>("livreId"));
+        idAdherentColumn.setCellValueFactory(new PropertyValueFactory<>("adherentId"));
         dateEmpruntColumn.setCellValueFactory(new PropertyValueFactory<>("dateEmprunt"));
         dateRetourPrevueColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourPrevue"));
-        dateRetourEffectifColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourEffectif"));
+        dateRetourEffectifColumn.setCellValueFactory(new PropertyValueFactory<>("dateRetourEffective"));
         retourneColumn.setCellValueFactory(new PropertyValueFactory<>("retourne"));
         
         // Charger les emprunts en cours
@@ -77,7 +79,7 @@ public class GestionEmpruntsController extends BaseController {
     
     private void loadEmpruntsEnCours() {
         empruntsList.clear();
-        empruntsList.addAll(empruntService.getEmpruntsEnCours());
+        empruntsList.addAll(gestionnaire.listerEmpruntsEnCours());
         empruntsTable.setItems(empruntsList);
     }
     
@@ -86,7 +88,7 @@ public class GestionEmpruntsController extends BaseController {
         try {
             int id = Integer.parseInt(searchField.getText());
             empruntsList.clear();
-            Emprunt emprunt = empruntService.getEmpruntById(id);
+            Emprunt emprunt = gestionnaire.getEmpruntParId(id);
             if (emprunt != null) {
                 empruntsList.add(emprunt);
             }
@@ -108,17 +110,24 @@ public class GestionEmpruntsController extends BaseController {
                 return;
             }
             
-            Emprunt emprunt = new Emprunt(idLivre, idAdherent, dateEmprunt, dateRetour);
-            empruntService.addEmprunt(emprunt);
+            Emprunt emprunt = new Emprunt();
+            emprunt.setLivreId(idLivre);
+            emprunt.setAdherentId(idAdherent);
+            emprunt.setDateEmprunt(Date.from(dateEmprunt.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            emprunt.setDateRetourPrevue(Date.from(dateRetour.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             
-            // Réinitialiser les champs
-            idLivreField.clear();
-            idAdherentField.clear();
-            dateEmpruntPicker.setValue(null);
-            dateRetourPicker.setValue(null);
-            
-            // Recharger la liste
-            loadEmpruntsEnCours();
+            if (gestionnaire.enregistrerEmprunt(emprunt)) {
+                // Réinitialiser les champs
+                idLivreField.clear();
+                idAdherentField.clear();
+                dateEmpruntPicker.setValue(null);
+                dateRetourPicker.setValue(null);
+                
+                // Recharger la liste
+                loadEmpruntsEnCours();
+            } else {
+                showError("Erreur lors de l'enregistrement de l'emprunt");
+            }
             
         } catch (NumberFormatException e) {
             showError("Les IDs doivent être des nombres valides");
@@ -129,13 +138,15 @@ public class GestionEmpruntsController extends BaseController {
     private void handleRetour() {
         try {
             int idEmprunt = Integer.parseInt(idEmpruntField.getText());
-            empruntService.retournerLivre(idEmprunt);
-            
-            // Réinitialiser le champ
-            idEmpruntField.clear();
-            
-            // Recharger la liste
-            loadEmpruntsEnCours();
+            if (gestionnaire.enregistrerRetour(idEmprunt, new Date())) {
+                // Réinitialiser le champ
+                idEmpruntField.clear();
+                
+                // Recharger la liste
+                loadEmpruntsEnCours();
+            } else {
+                showError("Erreur lors de l'enregistrement du retour");
+            }
             
         } catch (NumberFormatException e) {
             showError("L'ID doit être un nombre valide");
