@@ -1,11 +1,11 @@
 package fr.bibliotheque.ui.controllers;
 
-import fr.bibliotheque.metier.Admin;
+import fr.bibliotheque.metier.Administrateur;
 
 public abstract class BaseController {
-    protected Admin currentAdmin;
+    protected Administrateur currentAdmin;
     
-    public void setAdmin(Admin admin) {
+    public void setAdmin(Administrateur admin) {
         this.currentAdmin = admin;
     }
     

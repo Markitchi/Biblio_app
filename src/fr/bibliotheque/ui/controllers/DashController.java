@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import fr.bibliotheque.metier.Admin;
+import fr.bibliotheque.metier.Administrateur;
 
 public class DashController {
     @FXML
@@ -22,14 +22,14 @@ public class DashController {
     @FXML
     private Button gestionEmpruntsBtn;
     
-    private Admin currentAdmin;
+    private Administrateur currentAdmin;
     
     @FXML
     public void initialize() {
         setupButtonActions();
     }
     
-    public void setAdmin(Admin admin) {
+    public void setAdmin(Administrateur admin) {
         this.currentAdmin = admin;
         welcomeText.setText("Bonjour, " + admin.getLogin());
     }

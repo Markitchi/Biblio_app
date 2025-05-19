@@ -9,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import fr.bibliotheque.service.AdminService;
-import fr.bibliotheque.metier.Admin;
+import fr.bibliotheque.service.GestionnaireImpl;
+import fr.bibliotheque.metier.Administrateur;
 
 public class LoginController {
     @FXML
@@ -25,11 +25,11 @@ public class LoginController {
     @FXML
     private Label errorLabel;
     
-    private AdminService adminService;
+    private GestionnaireImpl gestionnaire;
     
     @FXML
     public void initialize() {
-        adminService = new AdminService();
+        gestionnaire = new GestionnaireImpl();
     }
     
     @FXML
@@ -42,7 +42,7 @@ public class LoginController {
             return;
         }
         
-        Admin admin = adminService.authentifier(login, password);
+        Administrateur admin = gestionnaire.authentifier(login, password);
         if (admin != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/Dash.fxml"));
