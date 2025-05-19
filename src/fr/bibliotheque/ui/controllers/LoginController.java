@@ -9,12 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import fr.bibliotheque.service.GestionnaireImpl;
 import fr.bibliotheque.metier.Administrateur;
+import fr.bibliotheque.service.GestionnaireImpl;
 
 public class LoginController {
     @FXML
-    private TextField emailField;.
+    private TextField usernameField;
     
     @FXML
     private PasswordField passwordField;
@@ -34,37 +34,36 @@ public class LoginController {
     
     @FXML
     private void handleLogin() {
-        String login = emailField.getText();
+        String username = usernameField.getText();
         String password = passwordField.getText();
         
-        if (login.isEmpty() || password.isEmpty()) {
-            showError("Veuillez remplir tous les champs");
+        if (username.isEmpty() || password.isEmpty()) {
+            errorLabel.setText("Veuillez remplir tous les champs");
             return;
         }
         
-        Administrateur admin = gestionnaire.authentifier(login, password);
-        if (admin != null) {
-            try {
+        try {
+            Administrateur admin = gestionnaire.authentifier(username, password);
+            if (admin != null) {
+                // Charger le tableau de bord
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/bibliotheque/ui/vues/Dash.fxml"));
                 Parent root = loader.load();
+                
+                // Obtenir le contrôleur et définir l'administrateur
                 DashController dashController = loader.getController();
                 dashController.setAdmin(admin);
                 
+                // Afficher la nouvelle scène
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
-            } catch (Exception e) {
-                showError("Erreur lors du chargement de la page d'accueil");
-                e.printStackTrace();
+            } else {
+                errorLabel.setText("Identifiants incorrects");
             }
-        } else {
-            showError("Login ou mot de passe incorrect");
+        } catch (Exception e) {
+            errorLabel.setText("Erreur lors de la connexion");
+            e.printStackTrace();
         }
-    }
-    
-    private void showError(String message) {
-        errorLabel.setText(message);
-        errorLabel.setVisible(true);
     }
 } 
